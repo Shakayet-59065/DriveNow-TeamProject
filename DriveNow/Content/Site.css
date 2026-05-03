@@ -1,0 +1,410 @@
+﻿/* DriveNow Shared Styles - Site.css */
+/* Place in Content/Site.css or paste inline in each page */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f5f7;
+    color: #1a1a2e;
+}
+
+/* ── NAVBAR ──────────────────────────────────── */
+.navbar {
+    background-color: #1a1a2e;
+    color: white;
+    padding: 14px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+    .navbar .brand {
+        font-size: 20px;
+        font-weight: bold;
+        color: white;
+        text-decoration: none;
+    }
+
+        .navbar .brand:hover {
+            opacity: 0.85;
+        }
+
+.nav-links {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    background: rgba(255,255,255,0.15);
+    padding: 6px 14px;
+    border-radius: 4px;
+}
+
+.navbar .brand {
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.navbar a:hover {
+    background: rgba(255,255,255,0.28);
+}
+
+.navbar .brand:hover {
+    background: transparent;
+}
+
+/* ── CONTAINER ───────────────────────────────── */
+.container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.container-sm {
+    max-width: 620px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* ── PAGE HEADER ─────────────────────────────── */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+h1 {
+    font-size: 22px;
+    color: #1a1a2e;
+}
+
+/* ── CARDS ───────────────────────────────────── */
+.card {
+    background: white;
+    border-radius: 8px;
+    padding: 28px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    margin-bottom: 20px;
+    overflow-x: auto;
+}
+
+/* ── FORM FIELDS ─────────────────────────────── */
+.field {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    font-size: 13px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="password"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+}
+
+    input:focus, textarea:focus, select:focus {
+        outline: none;
+        border-color: #1a1a2e;
+    }
+
+textarea {
+    height: 80px;
+    resize: vertical;
+}
+
+.hint {
+    font-size: 11px;
+    color: #888;
+    margin-top: 3px;
+}
+
+/* ── BUTTONS ─────────────────────────────────── */
+.btn {
+    padding: 10px 22px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 8px;
+    margin-top: 4px;
+}
+
+.btn-primary {
+    background: #1a1a2e;
+    color: white;
+}
+
+    .btn-primary:hover {
+        background: #2d3561;
+    }
+
+.btn-secondary {
+    background: #e5e7eb;
+    color: #333;
+}
+
+    .btn-secondary:hover {
+        background: #d1d5db;
+    }
+
+.btn-danger {
+    background: #ef4444;
+    color: white;
+}
+
+    .btn-danger:hover {
+        background: #dc2626;
+    }
+
+.btn-edit {
+    background: #f59e0b;
+    color: white;
+}
+
+    .btn-edit:hover {
+        background: #d97706;
+    }
+
+.btn-sm {
+    padding: 5px 12px;
+    font-size: 12px;
+}
+
+/* ── ALERTS ──────────────────────────────────── */
+.error {
+    color: #991b1b;
+    font-size: 13px;
+    padding: 12px 16px;
+    background: #fee2e2;
+    border-radius: 6px;
+    margin-bottom: 16px;
+}
+
+.success {
+    color: #065f46;
+    font-size: 13px;
+    padding: 12px 16px;
+    background: #d1fae5;
+    border-radius: 6px;
+    margin-bottom: 16px;
+}
+
+/* ── TABLE ───────────────────────────────────── */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px;
+}
+
+th {
+    background: #1a1a2e;
+    color: white;
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+td {
+    padding: 12px 16px;
+    font-size: 13px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover td {
+    background: #f9fafb;
+}
+
+/* ── BADGE ───────────────────────────────────── */
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.badge-active {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.badge-inactive {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* ── ACTIONS ─────────────────────────────────── */
+.actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+/* ── SEARCH ROW ──────────────────────────────── */
+.search-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+    .search-row input {
+        flex: 1;
+        min-width: 150px;
+    }
+
+/* ── FILTER ROW ──────────────────────────────── */
+.filter-row {
+    display: flex;
+    gap: 14px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.filter-field {
+    flex: 1;
+    min-width: 160px;
+}
+
+/* ── RESULT DETAIL ───────────────────────────── */
+.result-label {
+    font-size: 13px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 3px;
+}
+
+.result-value {
+    font-size: 14px;
+    color: #1a1a2e;
+    margin-bottom: 14px;
+}
+
+/* ── FOOTER ──────────────────────────────────── */
+.footer {
+    text-align: center;
+    color: #aaa;
+    font-size: 12px;
+    margin-top: 40px;
+    padding-bottom: 30px;
+}
+
+/* ── RESPONSIVE ──────────────────────────────── */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 12px 16px;
+    }
+
+        .navbar .brand {
+            font-size: 18px;
+        }
+
+    .container, .container-sm {
+        margin: 16px auto;
+        padding: 0 12px;
+    }
+
+    h1 {
+        font-size: 18px;
+    }
+
+    .card {
+        padding: 18px;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .filter-row {
+        flex-direction: column;
+    }
+
+    th, td {
+        padding: 10px 10px;
+        font-size: 12px;
+    }
+
+    .btn {
+        padding: 9px 16px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 10px 12px;
+    }
+
+        .navbar .brand {
+            font-size: 16px;
+        }
+
+    .nav-links a {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+
+    .card {
+        padding: 14px;
+    }
+
+    h1 {
+        font-size: 16px;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+        margin-right: 0;
+        margin-bottom: 6px;
+    }
+
+    .search-row {
+        flex-direction: column;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+        .actions .btn {
+            width: auto;
+        }
+}
