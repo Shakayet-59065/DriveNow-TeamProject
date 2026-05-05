@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Web.UI.WebControls;
 
+// DriveNow — Edit Trip Code-Behind
+// Loads an existing trip by ID and saves updated values
+// Module: CTEC2713N | Developer: Musanna
+
 namespace DriveNow
 {
     public partial class TripEdit : System.Web.UI.Page
@@ -19,6 +23,9 @@ namespace DriveNow
             }
         }
 
+        /// <summary>
+        /// Populates the Trip Type dropdown from tblTripType
+        /// </summary>
         private void LoadTripTypes()
         {
             try
@@ -35,6 +42,10 @@ namespace DriveNow
             }
         }
 
+        /// <summary>
+        /// Loads the trip record by ID from the query string
+        /// Pre-fills form fields with existing values
+        /// </summary>
         private void LoadTrip()
         {
             if (Request.QueryString["id"] == null)
@@ -53,16 +64,21 @@ namespace DriveNow
                 return;
             }
 
+            // Pre-fill form with existing values
             hdnTripID.Value = trip.TripID.ToString();
             txtCustomerID.Text = trip.CustomerID.ToString();
             txtVehicleID.Text = trip.VehicleID.ToString();
             txtDriverID.Text = trip.DriverID.HasValue ? trip.DriverID.Value.ToString() : "";
             txtTripDate.Text = trip.TripDate.ToString("dd/MM/yyyy");
 
+            // Set the current trip type as selected in the dropdown
             ListItem item = ddlTripType.Items.FindByValue(trip.TripTypeID.ToString());
             if (item != null) item.Selected = true;
         }
 
+        /// <summary>
+        /// Save button — validates updated values and saves to database
+        /// </summary>
         protected void btnSave_Click(object sender, EventArgs e)
         {
             Trip trip = new Trip();
@@ -86,6 +102,7 @@ namespace DriveNow
             }
             trip.VehicleID = vehicleID;
 
+            // DriverID optional — null is valid for self-drive
             if (!string.IsNullOrWhiteSpace(txtDriverID.Text))
             {
                 int driverID;
@@ -132,8 +149,8 @@ namespace DriveNow
 
             try
             {
+                // Update record via spEditTrip stored procedure
                 manager.EditTrip(trip);
-                // Redirect to list after successful save
                 Response.Redirect("TripList.aspx");
             }
             catch (Exception ex)

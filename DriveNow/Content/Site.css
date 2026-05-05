@@ -1,6 +1,14 @@
-﻿/* DriveNow Shared Styles - Site.css */
-/* Place in Content/Site.css or paste inline in each page */
+﻿/* ============================================================
+   DriveNow Admin System — Site.css
+   Design: Teal & White with Dark Sidebar
+   Module: CTEC2713N | Niels Brock Copenhagen
+   Developer: Musanna (Trip Records & Trip Type Catalogue)
+   ============================================================ */
 
+/* ── GOOGLE FONTS ────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+/* ── RESET ───────────────────────────────────────────────── */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -8,403 +16,874 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f5f7;
-    color: #1a1a2e;
+    font-family: 'DM Sans', Arial, sans-serif;
+    background: #f8fafb;
+    color: #0f172a;
+    font-size: 14px;
+    min-height: 100vh;
 }
 
-/* ── NAVBAR ──────────────────────────────────── */
-.navbar {
-    background-color: #1a1a2e;
-    color: white;
-    padding: 14px 30px;
+/* ============================================================
+   SHELL LAYOUT — Sidebar + Main split
+   ============================================================ */
+.dn-shell {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
+    min-height: 100vh;
 }
 
-    .navbar .brand {
-        font-size: 20px;
-        font-weight: bold;
-        color: white;
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+.dn-sidebar {
+    width: 210px;
+    background: #1a2332;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 100;
+    overflow-y: auto;
+}
+
+/* Logo area */
+.dn-sidebar-logo {
+    padding: 20px 18px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+    .dn-sidebar-logo img {
+        height: 32px;
+        object-fit: contain;
+        filter: none;
+        display: block;
+    }
+
+/* Navigation section */
+.dn-sidebar-nav {
+    padding: 10px 10px;
+    flex: 1;
+}
+
+/* Section label e.g. MAIN, TEAM */
+.dn-nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.25);
+    padding: 12px 10px 5px;
+}
+
+/* Nav item */
+.dn-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    border-radius: 7px;
+    cursor: pointer;
+    color: rgba(255,255,255,0.4);
+    font-size: 13px;
+    font-weight: 400;
+    margin-bottom: 1px;
+    text-decoration: none;
+    transition: all 0.15s;
+}
+
+    .dn-nav-item:hover {
+        background: rgba(255,255,255,0.07);
+        color: rgba(255,255,255,0.8);
         text-decoration: none;
     }
 
-        .navbar .brand:hover {
-            opacity: 0.85;
-        }
+    /* Active nav item — teal highlight */
+    .dn-nav-item.active {
+        background: rgba(13,148,136,0.18);
+        color: #2dd4bf;
+        font-weight: 500;
+    }
 
-.nav-links {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.navbar a {
-    color: white;
-    text-decoration: none;
+.dn-nav-icon {
+    width: 16px;
+    text-align: center;
     font-size: 13px;
-    background: rgba(255,255,255,0.15);
-    padding: 6px 14px;
-    border-radius: 4px;
+    flex-shrink: 0;
 }
 
-.navbar .brand {
-    background: transparent;
-    padding: 0;
-    border-radius: 0;
-    font-size: 20px;
-    font-weight: bold;
+/* Sidebar footer — user info */
+.dn-sidebar-footer {
+    padding: 14px 14px;
+    border-top: 1px solid rgba(255,255,255,0.07);
 }
 
-.navbar a:hover {
-    background: rgba(255,255,255,0.28);
-}
-
-.navbar .brand:hover {
-    background: transparent;
-}
-
-/* ── CONTAINER ───────────────────────────────── */
-.container {
-    max-width: 1000px;
-    margin: 30px auto;
-    padding: 0 20px;
-}
-
-.container-sm {
-    max-width: 620px;
-    margin: 30px auto;
-    padding: 0 20px;
-}
-
-/* ── PAGE HEADER ─────────────────────────────── */
-.page-header {
+.dn-sidebar-user {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.dn-sidebar-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0d9488, #14b8a6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.dn-sidebar-name {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.65);
+    font-weight: 400;
+}
+
+.dn-sidebar-role {
+    font-size: 10.5px;
+    color: rgba(255,255,255,0.3);
+    margin-top: 1px;
+}
+
+.dn-sidebar-logout {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s;
+    padding: 4px 2px;
+}
+
+    .dn-sidebar-logout:hover {
+        color: rgba(255,255,255,0.7);
+        text-decoration: none;
+    }
+
+/* ============================================================
+   MAIN CONTENT AREA
+   ============================================================ */
+.dn-main {
+    margin-left: 210px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Top bar */
+.dn-topbar {
+    background: #fff;
+    border-bottom: 1px solid #e5eaef;
+    padding: 0 24px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.dn-topbar-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #0f172a;
+    letter-spacing: -0.01em;
+}
+
+.dn-topbar-right {
+    display: flex;
+    align-items: center;
     gap: 10px;
 }
 
-h1 {
-    font-size: 22px;
-    color: #1a1a2e;
+.dn-topbar-date {
+    font-size: 12px;
+    color: #94a3b8;
 }
 
-/* ── CARDS ───────────────────────────────────── */
-.card {
-    background: white;
-    border-radius: 8px;
-    padding: 28px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    margin-bottom: 20px;
-    overflow-x: auto;
+/* Page body padding */
+.dn-content {
+    padding: 22px 24px 32px;
+    flex: 1;
 }
 
-/* ── FORM FIELDS ─────────────────────────────── */
-.field {
-    margin-bottom: 18px;
+/* ============================================================
+   STAT CARDS
+   ============================================================ */
+.dn-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 22px;
 }
 
-label {
-    display: block;
-    font-weight: bold;
-    font-size: 13px;
-    color: #333;
-    margin-bottom: 5px;
+.dn-stat {
+    background: #fff;
+    border: 1px solid #e5eaef;
+    border-radius: 10px;
+    padding: 16px;
+    transition: all 0.18s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
-input[type="text"],
-input[type="password"],
-textarea,
-select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    font-family: Arial, sans-serif;
-}
-
-    input:focus, textarea:focus, select:focus {
-        outline: none;
-        border-color: #1a1a2e;
+    .dn-stat:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 14px rgba(0,0,0,0.06);
     }
 
-textarea {
-    height: 80px;
-    resize: vertical;
+    /* Coloured bottom bar on each stat card */
+    .dn-stat::after {
+        content: '';
+        display: block;
+        height: 3px;
+        border-radius: 2px;
+        margin-top: 12px;
+    }
+
+.dn-stat-1::after {
+    background: linear-gradient(90deg, #14b8a6, #99f6e4);
 }
 
-.hint {
+.dn-stat-2::after {
+    background: linear-gradient(90deg, #3b82f6, #93c5fd);
+}
+
+.dn-stat-3::after {
+    background: linear-gradient(90deg, #f59e0b, #fcd34d);
+}
+
+.dn-stat-4::after {
+    background: linear-gradient(90deg, #8b5cf6, #c4b5fd);
+}
+
+.dn-stat-num {
+    font-family: 'Outfit', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+
+.dn-stat-label {
     font-size: 11px;
-    color: #888;
-    margin-top: 3px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-top: 4px;
+    font-weight: 500;
 }
 
-/* ── BUTTONS ─────────────────────────────────── */
-.btn {
-    padding: 10px 22px;
-    border: none;
-    border-radius: 4px;
+/* ============================================================
+   SECTION HEADER
+   ============================================================ */
+.dn-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.dn-section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+/* ============================================================
+   FILTER PILLS
+   ============================================================ */
+.dn-pills {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.dn-pill {
+    font-size: 12px;
+    padding: 5px 14px;
+    border-radius: 20px;
     cursor: pointer;
-    font-size: 14px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #64748b;
+    transition: all 0.15s;
+    font-weight: 400;
     text-decoration: none;
     display: inline-block;
-    margin-right: 8px;
-    margin-top: 4px;
 }
 
-.btn-primary {
-    background: #1a1a2e;
-    color: white;
-}
-
-    .btn-primary:hover {
-        background: #2d3561;
+    .dn-pill:hover {
+        border-color: #0d9488;
+        color: #0d9488;
+        text-decoration: none;
     }
 
-.btn-secondary {
-    background: #e5e7eb;
-    color: #333;
-}
-
-    .btn-secondary:hover {
-        background: #d1d5db;
+    .dn-pill.active {
+        background: #0d9488;
+        color: #fff;
+        border-color: #0d9488;
+        font-weight: 500;
     }
 
-.btn-danger {
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.dn-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 20px;
+    border-radius: 22px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s;
+    border: none;
+    font-family: 'DM Sans', Arial, sans-serif;
+}
+
+/* Primary — teal */
+.dn-btn-primary {
+    background: #0d9488;
+    color: #fff;
+}
+
+    .dn-btn-primary:hover {
+        background: #0f766e;
+        color: #fff;
+        text-decoration: none;
+    }
+
+/* Secondary — outlined */
+.dn-btn-secondary {
+    background: #fff;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+}
+
+    .dn-btn-secondary:hover {
+        border-color: #0d9488;
+        color: #0d9488;
+        text-decoration: none;
+    }
+
+/* Danger — red */
+.dn-btn-danger {
     background: #ef4444;
-    color: white;
+    color: #fff;
 }
 
-    .btn-danger:hover {
+    .dn-btn-danger:hover {
         background: #dc2626;
+        color: #fff;
+        text-decoration: none;
     }
 
-.btn-edit {
-    background: #f59e0b;
-    color: white;
-}
-
-    .btn-edit:hover {
-        background: #d97706;
-    }
-
-.btn-sm {
-    padding: 5px 12px;
+/* Small variant */
+.dn-btn-sm {
+    padding: 5px 14px;
     font-size: 12px;
 }
 
-/* ── ALERTS ──────────────────────────────────── */
-.error {
-    color: #991b1b;
-    font-size: 13px;
-    padding: 12px 16px;
-    background: #fee2e2;
-    border-radius: 6px;
-    margin-bottom: 16px;
+/* ============================================================
+   TABLE
+   ============================================================ */
+.dn-table-wrap {
+    background: #fff;
+    border: 1px solid #e5eaef;
+    border-radius: 10px;
+    overflow-x: auto;
 }
 
-.success {
-    color: #065f46;
-    font-size: 13px;
-    padding: 12px 16px;
-    background: #d1fae5;
-    border-radius: 6px;
-    margin-bottom: 16px;
-}
-
-/* ── TABLE ───────────────────────────────────── */
-table {
+table.dn-table {
     width: 100%;
     border-collapse: collapse;
     min-width: 500px;
 }
 
-th {
-    background: #1a1a2e;
-    color: white;
-    padding: 12px 16px;
-    text-align: left;
-    font-size: 13px;
-    white-space: nowrap;
-}
+    table.dn-table th {
+        font-size: 10.5px;
+        font-weight: 600;
+        color: #94a3b8;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 11px 14px;
+        border-bottom: 1px solid #f0f4f8;
+        text-align: left;
+        background: #f8fafb;
+        white-space: nowrap;
+    }
 
-td {
-    padding: 12px 16px;
-    font-size: 13px;
-    border-bottom: 1px solid #f0f0f0;
-    vertical-align: middle;
-}
+    table.dn-table td {
+        font-size: 13px;
+        color: #334155;
+        padding: 11px 14px;
+        border-bottom: 1px solid #f3f6f9;
+        vertical-align: middle;
+    }
 
-tr:last-child td {
-    border-bottom: none;
-}
+    table.dn-table tr:last-child td {
+        border-bottom: none;
+    }
 
-tr:hover td {
-    background: #f9fafb;
-}
+    table.dn-table tr:hover td {
+        background: #f0fdfa;
+    }
 
-/* ── BADGE ───────────────────────────────────── */
-.badge {
+/* Trip ID tag */
+.dn-trip-id {
+    font-family: 'Outfit', monospace;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #0d9488;
+    background: #f0fdfa;
+    padding: 3px 8px;
+    border-radius: 5px;
     display: inline-block;
-    padding: 3px 10px;
-    border-radius: 12px;
+    letter-spacing: 0.01em;
+}
+
+/* Type pill */
+.dn-type-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 9px;
+    border-radius: 20px;
     font-size: 11px;
-    font-weight: bold;
+    font-weight: 500;
+    background: #f0fdfa;
+    color: #0d9488;
+    border: 1px solid #99f6e4;
 }
 
-.badge-active {
-    background: #d1fae5;
-    color: #065f46;
+/* Status dot */
+.dn-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 500;
 }
 
-.badge-inactive {
-    background: #fee2e2;
-    color: #991b1b;
+.dn-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
 }
 
-/* ── ACTIONS ─────────────────────────────────── */
-.actions {
+.dn-dot-green {
+    background: #10b981;
+}
+
+.dn-dot-amber {
+    background: #f59e0b;
+}
+
+.dn-dot-red {
+    background: #ef4444;
+}
+
+/* Action links in table */
+.dn-action-edit {
+    font-size: 12px;
+    color: #0d9488;
+    cursor: pointer;
+    margin-right: 12px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+    .dn-action-edit:hover {
+        text-decoration: underline;
+    }
+
+.dn-action-del {
+    font-size: 12px;
+    color: #ef4444;
+    cursor: pointer;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+    .dn-action-del:hover {
+        text-decoration: underline;
+    }
+
+/* ============================================================
+   FORMS
+   ============================================================ */
+.dn-form-card {
+    background: #fff;
+    border: 1px solid #e5eaef;
+    border-radius: 10px;
+    padding: 28px;
+    max-width: 620px;
+}
+
+.dn-field {
+    margin-bottom: 18px;
+}
+
+.dn-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 6px;
+}
+
+    .dn-label span.required {
+        color: #ef4444;
+        margin-left: 2px;
+    }
+
+.dn-input,
+.dn-textarea,
+.dn-select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #dde3ed;
+    border-radius: 7px;
+    font-size: 13.5px;
+    font-family: 'DM Sans', Arial, sans-serif;
+    color: #0f172a;
+    background: #fff;
+    transition: border-color 0.15s;
+    -webkit-appearance: none;
+}
+
+    .dn-input:focus,
+    .dn-textarea:focus,
+    .dn-select:focus {
+        outline: none;
+        border-color: #0d9488;
+        box-shadow: 0 0 0 3px rgba(13,148,136,0.08);
+    }
+
+.dn-textarea {
+    height: 80px;
+    resize: vertical;
+}
+
+.dn-hint {
+    font-size: 11.5px;
+    color: #94a3b8;
+    margin-top: 4px;
+}
+
+.dn-form-actions {
     display: flex;
-    gap: 6px;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
     flex-wrap: wrap;
 }
 
-/* ── SEARCH ROW ──────────────────────────────── */
-.search-row {
+/* ============================================================
+   ALERTS
+   ============================================================ */
+.dn-alert-error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+
+.dn-alert-success {
+    background: #f0fdfa;
+    border: 1px solid #99f6e4;
+    color: #065f46;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+
+/* ============================================================
+   SEARCH ROW (Find page)
+   ============================================================ */
+.dn-search-row {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
 }
 
-    .search-row input {
+    .dn-search-row .dn-input {
         flex: 1;
-        min-width: 150px;
+        min-width: 160px;
     }
 
-/* ── FILTER ROW ──────────────────────────────── */
-.filter-row {
+/* ============================================================
+   RESULT DETAIL (Find result)
+   ============================================================ */
+.dn-result-card {
+    background: #fff;
+    border: 1px solid #e5eaef;
+    border-radius: 10px;
+    padding: 22px;
+    margin-top: 16px;
+}
+
+.dn-result-row {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+
+.dn-result-field {
+    flex: 1;
+    min-width: 140px;
+}
+
+.dn-result-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 4px;
+}
+
+.dn-result-value {
+    font-size: 13.5px;
+    color: #0f172a;
+    font-weight: 400;
+}
+
+/* ============================================================
+   FILTER ROW
+   ============================================================ */
+.dn-filter-row {
     display: flex;
     gap: 14px;
     align-items: flex-end;
     flex-wrap: wrap;
+    background: #fff;
+    border: 1px solid #e5eaef;
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 16px;
 }
 
-.filter-field {
+.dn-filter-field {
     flex: 1;
     min-width: 160px;
 }
 
-/* ── RESULT DETAIL ───────────────────────────── */
-.result-label {
-    font-size: 13px;
-    font-weight: bold;
-    color: #555;
-    margin-bottom: 3px;
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+.dn-page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
-.result-value {
-    font-size: 14px;
-    color: #1a1a2e;
-    margin-bottom: 14px;
+.dn-page-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #0f172a;
+    letter-spacing: -0.01em;
 }
 
-/* ── FOOTER ──────────────────────────────────── */
-.footer {
+.dn-page-sub {
+    font-size: 12.5px;
+    color: #94a3b8;
+    margin-top: 3px;
+}
+
+/* ============================================================
+   LOGIN PAGE
+   ============================================================ */
+.dn-login-body {
+    background: linear-gradient(135deg, #1a2332 0%, #243447 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.dn-login-box {
+    background: #fff;
+    border-radius: 14px;
+    padding: 40px 36px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
+
+.dn-login-logo {
+    height: 44px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 20px;
+}
+
+.dn-login-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
     text-align: center;
-    color: #aaa;
-    font-size: 12px;
-    margin-top: 40px;
-    padding-bottom: 30px;
+    margin-bottom: 4px;
 }
 
-/* ── RESPONSIVE ──────────────────────────────── */
+.dn-login-sub {
+    font-size: 13px;
+    color: #94a3b8;
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.dn-login-btn {
+    width: 100%;
+    padding: 12px;
+    background: #0d9488;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', Arial, sans-serif;
+    transition: background 0.15s;
+    margin-top: 8px;
+}
+
+    .dn-login-btn:hover {
+        background: #0f766e;
+    }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.dn-footer {
+    text-align: center;
+    padding: 14px 24px;
+    border-top: 1px solid #e5eaef;
+    font-size: 11.5px;
+    color: #94a3b8;
+    background: #fff;
+    margin-top: auto;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+    .dn-sidebar {
+        width: 180px;
+    }
+
+    .dn-main {
+        margin-left: 180px;
+    }
+}
+
 @media (max-width: 768px) {
-    .navbar {
-        padding: 12px 16px;
+    .dn-shell {
+        flex-direction: column;
     }
 
-        .navbar .brand {
-            font-size: 18px;
-        }
-
-    .container, .container-sm {
-        margin: 16px auto;
-        padding: 0 12px;
+    .dn-sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
 
-    h1 {
-        font-size: 18px;
+    .dn-sidebar-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        padding: 8px;
     }
 
-    .card {
+    .dn-nav-label {
+        display: none;
+    }
+
+    .dn-sidebar-footer {
+        display: none;
+    }
+
+    .dn-main {
+        margin-left: 0;
+    }
+
+    .dn-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dn-page-header {
+        flex-direction: column;
+    }
+
+    .dn-filter-row {
+        flex-direction: column;
+    }
+
+    .dn-form-card {
         padding: 18px;
     }
 
-    .page-header {
+    .dn-result-row {
         flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .filter-row {
-        flex-direction: column;
-    }
-
-    th, td {
-        padding: 10px 10px;
-        font-size: 12px;
-    }
-
-    .btn {
-        padding: 9px 16px;
-        font-size: 13px;
+        gap: 14px;
     }
 }
 
 @media (max-width: 480px) {
-    .navbar {
-        padding: 10px 12px;
+    .dn-stats {
+        grid-template-columns: 1fr 1fr;
     }
 
-        .navbar .brand {
-            font-size: 16px;
-        }
-
-    .nav-links a {
-        font-size: 12px;
-        padding: 5px 10px;
+    .dn-content {
+        padding: 14px 14px 24px;
     }
 
-    .card {
-        padding: 14px;
-    }
-
-    h1 {
-        font-size: 16px;
-    }
-
-    .btn {
+    .dn-btn {
         width: 100%;
-        text-align: center;
-        margin-right: 0;
-        margin-bottom: 6px;
+        justify-content: center;
     }
 
-    .search-row {
+    .dn-form-actions {
         flex-direction: column;
     }
 
-    .actions {
-        flex-direction: column;
-    }
-
-        .actions .btn {
-            width: auto;
+        .dn-form-actions .dn-btn {
+            width: 100%;
         }
 }

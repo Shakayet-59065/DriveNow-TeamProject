@@ -1,20 +1,34 @@
 ﻿using System;
 
+// DriveNow — Add Trip Type Code-Behind
+// Handles creation of new trip type records in tblTripType
+// Validates input before calling the middle layer
+// Module: CTEC2713N | Developer: Musanna
+
 namespace DriveNow
 {
     public partial class TripTypeAdd : System.Web.UI.Page
     {
+        // TripManager instance for middle layer calls
         TripManager manager = new TripManager();
 
+        /// <summary>
+        /// Page load — check session
+        /// </summary>
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["LoggedIn"] == null || !(bool)Session["LoggedIn"])
                 Response.Redirect("Login.aspx");
         }
 
+        /// <summary>
+        /// Save button — validates form and adds new trip type
+        /// Calls ValidateTripType then AddTripType via TripManager
+        /// Redirects to TripTypeList on success
+        /// </summary>
         protected void btnSave_Click(object sender, EventArgs e)
         {
-            // Build TripType object from form inputs
+            // Build TripType object from form input values
             TripType tripType = new TripType
             {
                 TypeName = txtTypeName.Text.Trim(),
@@ -22,7 +36,7 @@ namespace DriveNow
                 BaseRate = 0
             };
 
-            // Parse BaseRate
+            // Parse and validate BaseRate as a decimal number
             decimal baseRate;
             if (!decimal.TryParse(txtBaseRate.Text.Trim(), out baseRate))
             {
@@ -32,7 +46,7 @@ namespace DriveNow
             }
             tripType.BaseRate = baseRate;
 
-            // Validate before saving
+            // Run validation checks via middle layer ValidateTripType method
             string error = manager.ValidateTripType(tripType);
             if (!string.IsNullOrEmpty(error))
             {
@@ -43,15 +57,11 @@ namespace DriveNow
 
             try
             {
-                int newID = manager.AddTripType(tripType);
-                lblSuccess.Text = "Trip type added successfully. ID: " + newID;
-                lblSuccess.Visible = true;
-                lblError.Visible = false;
+                // Save to database via spAddTripType stored procedure
+                manager.AddTripType(tripType);
 
-                // Clear form
-                txtTypeName.Text = "";
-                txtDescription.Text = "";
-                txtBaseRate.Text = "";
+                // Redirect to list page after successful save
+                Response.Redirect("TripTypeList.aspx");
             }
             catch (Exception ex)
             {
@@ -60,6 +70,9 @@ namespace DriveNow
             }
         }
 
+        /// <summary>
+        /// Cancel button — returns to trip type list without saving
+        /// </summary>
         protected void btnCancel_Click(object sender, EventArgs e)
         {
             Response.Redirect("TripTypeList.aspx");

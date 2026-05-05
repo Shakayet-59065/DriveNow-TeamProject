@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Web.UI.WebControls;
 
+// DriveNow — Add Trip Code-Behind
+// Handles creation of new trip records in tblTrip
+// DriverID is nullable — null is valid for self-drive rentals
+// Module: CTEC2713N | Developer: Musanna
+
 namespace DriveNow
 {
     public partial class TripAdd : System.Web.UI.Page
@@ -12,10 +17,15 @@ namespace DriveNow
             if (Session["LoggedIn"] == null || !(bool)Session["LoggedIn"])
                 Response.Redirect("Login.aspx");
 
+            // Load trip types into dropdown on first page load only
             if (!IsPostBack)
                 LoadTripTypes();
         }
 
+        /// <summary>
+        /// Populates the Trip Type dropdown from tblTripType
+        /// Calls spListTripTypes via TripManager.ListTripTypes()
+        /// </summary>
         private void LoadTripTypes()
         {
             try
@@ -24,6 +34,8 @@ namespace DriveNow
                 ddlTripType.DataTextField = "TypeName";
                 ddlTripType.DataValueField = "TripTypeID";
                 ddlTripType.DataBind();
+
+                // Add a default empty selection at the top
                 ddlTripType.Items.Insert(0, new ListItem("-- Select Trip Type --", "0"));
             }
             catch (Exception ex)
@@ -33,10 +45,16 @@ namespace DriveNow
             }
         }
 
+        /// <summary>
+        /// Save button — validates form data and creates new trip record
+        /// Calls ValidateTrip then AddTrip via TripManager
+        /// Redirects to TripList on success
+        /// </summary>
         protected void btnSave_Click(object sender, EventArgs e)
         {
             Trip trip = new Trip();
 
+            // Validate and parse CustomerID
             int customerID;
             if (!int.TryParse(txtCustomerID.Text.Trim(), out customerID) || customerID <= 0)
             {
@@ -46,6 +64,7 @@ namespace DriveNow
             }
             trip.CustomerID = customerID;
 
+            // Validate and parse VehicleID
             int vehicleID;
             if (!int.TryParse(txtVehicleID.Text.Trim(), out vehicleID) || vehicleID <= 0)
             {
@@ -55,12 +74,13 @@ namespace DriveNow
             }
             trip.VehicleID = vehicleID;
 
+            // DriverID is optional — null means self-drive rental (no driver needed)
             if (!string.IsNullOrWhiteSpace(txtDriverID.Text))
             {
                 int driverID;
                 if (!int.TryParse(txtDriverID.Text.Trim(), out driverID) || driverID <= 0)
                 {
-                    lblError.Text = "Driver ID must be a valid number or left blank.";
+                    lblError.Text = "Driver ID must be a valid number or left blank for self-drive.";
                     lblError.Visible = true;
                     return;
                 }
@@ -68,9 +88,11 @@ namespace DriveNow
             }
             else
             {
+                // Null DriverID is valid — represents a self-drive rental
                 trip.DriverID = null;
             }
 
+            // Validate TripTypeID from dropdown selection
             int tripTypeID;
             if (!int.TryParse(ddlTripType.SelectedValue, out tripTypeID) || tripTypeID <= 0)
             {
@@ -80,6 +102,7 @@ namespace DriveNow
             }
             trip.TripTypeID = tripTypeID;
 
+            // Parse TripDate — expected format dd/MM/yyyy
             DateTime tripDate;
             if (!DateTime.TryParseExact(txtTripDate.Text.Trim(), "dd/MM/yyyy",
                 System.Globalization.CultureInfo.InvariantCulture,
@@ -91,6 +114,7 @@ namespace DriveNow
             }
             trip.TripDate = tripDate;
 
+            // Run middle layer validation before saving
             string error = manager.ValidateTrip(trip);
             if (!string.IsNullOrEmpty(error))
             {
@@ -101,7 +125,9 @@ namespace DriveNow
 
             try
             {
+                // Save to database via spAddTrip stored procedure
                 manager.AddTrip(trip);
+
                 // Redirect to list after successful save
                 Response.Redirect("TripList.aspx");
             }
@@ -112,6 +138,9 @@ namespace DriveNow
             }
         }
 
+        /// <summary>
+        /// Cancel — returns to trip list without saving
+        /// </summary>
         protected void btnCancel_Click(object sender, EventArgs e)
         {
             Response.Redirect("TripList.aspx");

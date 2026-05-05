@@ -8,50 +8,99 @@
 </head>
 <body>
 <form id="frmTripAdd" runat="server">
+<div class="dn-shell">
 
-    <div class="navbar">
-        <a href="MainMenu.aspx" class="brand">DriveNow</a>
-        <div class="nav-links">
-            <a href="TripList.aspx">← Trip List</a>
-            <a href="MainMenu.aspx">Main Menu</a>
+    <!-- SIDEBAR -->
+    <div class="dn-sidebar">
+        <div class="dn-sidebar-logo"><img src="Content/logo.png" alt="DriveNow" /></div>
+        <nav class="dn-sidebar-nav">
+            <div class="dn-nav-label">Main</div>
+            <a href="MainMenu.aspx"     class="dn-nav-item"><span class="dn-nav-icon">⬛</span>Dashboard</a>
+            <a href="TripList.aspx"     class="dn-nav-item active"><span class="dn-nav-icon">🛣</span>Trips</a>
+            <a href="TripTypeList.aspx" class="dn-nav-item"><span class="dn-nav-icon">🏷</span>Trip Types</a>
+            <div class="dn-nav-label">Team</div>
+            <a href="#" class="dn-nav-item"><span class="dn-nav-icon">👤</span>Customers</a>
+            <a href="#" class="dn-nav-item"><span class="dn-nav-icon">🚗</span>Drivers</a>
+            <a href="#" class="dn-nav-item"><span class="dn-nav-icon">🚙</span>Vehicles</a>
+            <a href="#" class="dn-nav-item"><span class="dn-nav-icon">📝</span>Contributors</a>
+        </nav>
+        <div class="dn-sidebar-footer">
+            <div class="dn-sidebar-user">
+                <div class="dn-sidebar-avatar">A</div>
+                <div><div class="dn-sidebar-name">Admin</div><div class="dn-sidebar-role">Staff Portal</div></div>
+            </div>
+            <a href="Logout.aspx" class="dn-sidebar-logout">↩ Log out</a>
         </div>
     </div>
 
-    <div class="container-sm">
-        <h1 style="margin-bottom:20px">Add Trip</h1>
-        <div class="card">
-            <asp:Label ID="lblError"   runat="server" CssClass="error"   Visible="false" />
-            <asp:Label ID="lblSuccess" runat="server" CssClass="success" Visible="false" />
-
-            <div class="field">
-                <label>Customer ID *</label>
-                <asp:TextBox ID="txtCustomerID" runat="server" placeholder="Enter Customer ID" />
+    <!-- MAIN -->
+    <div class="dn-main">
+        <div class="dn-topbar">
+            <div class="dn-topbar-title">Add Trip</div>
+            <div class="dn-topbar-right">
+                <a href="TripList.aspx" class="dn-btn dn-btn-secondary dn-btn-sm">← Trip List</a>
             </div>
-            <div class="field">
-                <label>Vehicle ID *</label>
-                <asp:TextBox ID="txtVehicleID" runat="server" placeholder="Enter Vehicle ID" />
-            </div>
-            <div class="field">
-                <label>Driver ID</label>
-                <asp:TextBox ID="txtDriverID" runat="server" placeholder="Leave blank for self-drive" />
-                <div class="hint">Leave blank for self-drive rentals — no driver required.</div>
-            </div>
-            <div class="field">
-                <label>Trip Type *</label>
-                <asp:DropDownList ID="ddlTripType" runat="server" />
-            </div>
-            <div class="field">
-                <label>Trip Date * (dd/MM/yyyy)</label>
-                <asp:TextBox ID="txtTripDate" runat="server" placeholder="e.g. 01/06/2026" />
-            </div>
-
-            <asp:Button ID="btnSave"   runat="server" Text="Save"   CssClass="btn btn-primary"   OnClick="btnSave_Click" />
-            <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="btn btn-secondary" OnClick="btnCancel_Click" CausesValidation="false" />
         </div>
+
+        <div class="dn-content">
+            <div class="dn-page-header">
+                <div>
+                    <div class="dn-page-title">New Trip</div>
+                    <div class="dn-page-sub">Create a new trip record in the DriveNow system</div>
+                </div>
+            </div>
+
+            <div class="dn-form-card">
+                <asp:Label ID="lblError"   runat="server" CssClass="dn-alert-error"   Visible="false" />
+                <asp:Label ID="lblSuccess" runat="server" CssClass="dn-alert-success" Visible="false" />
+
+                <!-- Customer ID -->
+                <div class="dn-field">
+                    <label class="dn-label">Customer ID <span class="required">*</span></label>
+                    <asp:TextBox ID="txtCustomerID" runat="server" CssClass="dn-input" placeholder="Enter Customer ID" />
+                    <div class="dn-hint">Enter the ID of the customer who booked this trip.</div>
+                </div>
+
+                <!-- Vehicle ID -->
+                <div class="dn-field">
+                    <label class="dn-label">Vehicle ID <span class="required">*</span></label>
+                    <asp:TextBox ID="txtVehicleID" runat="server" CssClass="dn-input" placeholder="Enter Vehicle ID" />
+                    <div class="dn-hint">Enter the ID of the vehicle assigned to this trip.</div>
+                </div>
+
+                <!-- Driver ID — optional for self-drive -->
+                <div class="dn-field">
+                    <label class="dn-label">Driver ID</label>
+                    <asp:TextBox ID="txtDriverID" runat="server" CssClass="dn-input" placeholder="Leave blank for self-drive" />
+                    <div class="dn-hint">Leave blank for Self-Drive Rental — no driver is required.</div>
+                </div>
+
+                <!-- Trip Type dropdown -->
+                <div class="dn-field">
+                    <label class="dn-label">Trip Type <span class="required">*</span></label>
+                    <asp:DropDownList ID="ddlTripType" runat="server" CssClass="dn-select" />
+                </div>
+
+                <!-- Trip Date -->
+                <div class="dn-field">
+                    <label class="dn-label">Trip Date <span class="required">*</span></label>
+                    <asp:TextBox ID="txtTripDate" runat="server" CssClass="dn-input" placeholder="dd/MM/yyyy" />
+                    <div class="dn-hint">Format: dd/MM/yyyy e.g. 01/06/2026</div>
+                </div>
+
+                <div class="dn-form-actions">
+                    <asp:Button ID="btnSave" runat="server" Text="Save Trip"
+                        CssClass="dn-btn dn-btn-primary" OnClick="btnSave_Click" />
+                    <asp:Button ID="btnCancel" runat="server" Text="Cancel"
+                        CssClass="dn-btn dn-btn-secondary" OnClick="btnCancel_Click"
+                        CausesValidation="false" />
+                </div>
+            </div>
+        </div>
+        <div class="dn-footer">DriveNow Admin System &nbsp;·&nbsp; CTEC2713N &nbsp;·&nbsp; Niels Brock Copenhagen</div>
     </div>
 
-    <div class="footer">DriveNow Admin System &nbsp;|&nbsp; CTEC2713N &nbsp;|&nbsp; Niels Brock Copenhagen</div>
-
+</div>
 </form>
 </body>
 </html>
