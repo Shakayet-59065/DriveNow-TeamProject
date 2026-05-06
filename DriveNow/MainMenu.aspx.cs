@@ -64,7 +64,7 @@ namespace DriveNow
                         lblTripTypeCount.Text = cmd.ExecuteScalar().ToString();
                     }
 
-                    // Count active customers from tblCustomer
+                    // Count active Users from tblCustomer
                     using (SqlCommand cmd = new SqlCommand(
                         "SELECT COUNT(*) FROM tblCustomer WHERE IsActive = 1", conn))
                     {
