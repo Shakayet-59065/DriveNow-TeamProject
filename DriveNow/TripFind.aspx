@@ -19,7 +19,7 @@
             <a href="TripList.aspx"     class="dn-nav-item active"><span class="dn-nav-icon">🛣</span>Trips</a>
             <a href="TripTypeList.aspx" class="dn-nav-item"><span class="dn-nav-icon">🏷</span>Trip Types</a>
             <div class="dn-nav-label">Team</div>
-            <a href="#" class="dn-nav-item"><span class="dn-nav-icon">👤</span>Users</a>
+            <a href="#" class="dn-nav-item"><span class="dn-nav-icon">👤</span>Customers</a>
             <a href="#" class="dn-nav-item"><span class="dn-nav-icon">🚗</span>Drivers</a>
             <a href="#" class="dn-nav-item"><span class="dn-nav-icon">🚙</span>Vehicles</a>
             <a href="#" class="dn-nav-item"><span class="dn-nav-icon">📝</span>Contributors</a>
@@ -86,7 +86,7 @@
                     <div class="dn-result-row">
                         <div class="dn-result-field">
                             <div class="dn-result-label">Customer ID</div>
-                            <div class="dn-result-value"><asp:Label ID="lblUserId" runat="server" /></div>
+                            <div class="dn-result-value"><asp:Label ID="lblCustomerId" runat="server" /></div>
                         </div>
                         <div class="dn-result-field">
                             <div class="dn-result-label">Vehicle ID</div>

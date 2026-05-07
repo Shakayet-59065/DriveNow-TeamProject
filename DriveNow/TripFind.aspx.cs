@@ -50,7 +50,7 @@ namespace DriveNow
 
                 // Populate result panel with trip details
                 lblTripID.Text = "#TRP-00" + trip.TripID.ToString();
-                lblUserId.Text = trip.UserId.ToString();
+                lblCustomerId.Text = trip.CustomerId.ToString();
                 lblVehicleID.Text = trip.VehicleID.ToString();
                 lblDriverID.Text = trip.DriverID.HasValue
                     ? trip.DriverID.Value.ToString()

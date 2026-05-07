@@ -19,8 +19,8 @@ namespace DriveNow
         /// <summary>Unique identifier for the trip. Primary key.</summary>
         public int TripID { get; set; }
 
-        /// <summary>Foreign key referencing tblUser.</summary>
-        public int UserId { get; set; }
+        /// <summary>Foreign key referencing tblCustomer.</summary>
+        public int CustomerId { get; set; }
 
         /// <summary>Foreign key referencing tblVehicle.</summary>
         public int VehicleID { get; set; }
@@ -265,7 +265,7 @@ namespace DriveNow
                         trips.Add(new Trip
                         {
                             TripID = (int)reader["TripID"],
-                            UserId = (int)reader["UserId"],
+                            CustomerId = (int)reader["CustomerId"],
                             VehicleID = (int)reader["VehicleID"],
                             DriverID = reader["DriverID"] == DBNull.Value ? (int?)null : (int)reader["DriverID"],
                             TripTypeID = (int)reader["TripTypeID"],
@@ -298,7 +298,7 @@ namespace DriveNow
                         trip = new Trip
                         {
                             TripID = (int)reader["TripID"],
-                            UserId = (int)reader["UserId"],
+                            CustomerId = (int)reader["CustomerId"],
                             VehicleID = (int)reader["VehicleID"],
                             DriverID = reader["DriverID"] == DBNull.Value ? (int?)null : (int)reader["DriverID"],
                             TripTypeID = (int)reader["TripTypeID"],
@@ -324,7 +324,7 @@ namespace DriveNow
             using (SqlCommand cmd = new SqlCommand("spAddTrip", conn))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@UserId", trip.UserId);
+                cmd.Parameters.AddWithValue("@CustomerId", trip.CustomerId);
                 cmd.Parameters.AddWithValue("@VehicleID", trip.VehicleID);
                 cmd.Parameters.AddWithValue("@DriverID", trip.DriverID.HasValue ? (object)trip.DriverID.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@TripTypeID", trip.TripTypeID);
@@ -348,7 +348,7 @@ namespace DriveNow
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@TripID", trip.TripID);
-                cmd.Parameters.AddWithValue("@UserId", trip.UserId);
+                cmd.Parameters.AddWithValue("@CustomerId", trip.CustomerId);
                 cmd.Parameters.AddWithValue("@VehicleID", trip.VehicleID);
                 cmd.Parameters.AddWithValue("@DriverID", trip.DriverID.HasValue ? (object)trip.DriverID.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@TripTypeID", trip.TripTypeID);
@@ -394,7 +394,7 @@ namespace DriveNow
                         trips.Add(new Trip
                         {
                             TripID = (int)reader["TripID"],
-                            UserId = (int)reader["UserId"],
+                            CustomerId = (int)reader["CustomerId"],
                             VehicleID = (int)reader["VehicleID"],
                             DriverID = reader["DriverID"] == DBNull.Value ? (int?)null : (int)reader["DriverID"],
                             TripTypeID = (int)reader["TripTypeID"],
@@ -410,21 +410,21 @@ namespace DriveNow
 
         /// <summary>
         /// Returns all active trips for a specific customer.
-        /// Used by the customer portal — filters by UserId so Users
+        /// Used by the customer portal — filters by CustomerId so Customers
         /// never see each other's data. GDPR data isolation requirement.
-        /// Calls spListTripsByUser.
+        /// Calls spListTripsByCustomer.
         /// </summary>
-        public List<Trip> ListTripsByUser(int UserId)
+        public List<Trip> ListTripsByCustomer(int CustomerId)
         {
             List<Trip> trips = new List<Trip>();
 
             try
             {
                 using (SqlConnection conn = DatabaseHelper.GetConnection())
-                using (SqlCommand cmd = new SqlCommand("spListTripsByUser", conn))
+                using (SqlCommand cmd = new SqlCommand("spListTripsByCustomer", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@UserId", UserId);
+                    cmd.Parameters.AddWithValue("@CustomerId", CustomerId);
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -433,7 +433,7 @@ namespace DriveNow
                             trips.Add(new Trip
                             {
                                 TripID = (int)reader["TripID"],
-                                UserId = (int)reader["UserId"],
+                                CustomerId = (int)reader["CustomerId"],
                                 VehicleID = (int)reader["VehicleID"],
                                 DriverID = reader["DriverID"] == DBNull.Value ? (int?)null : (int)reader["DriverID"],
                                 TripTypeID = (int)reader["TripTypeID"],
@@ -459,7 +459,7 @@ namespace DriveNow
         /// </summary>
         public string ValidateTrip(Trip trip)
         {
-            if (trip.UserId <= 0)
+            if (trip.CustomerId <= 0)
                 return "A valid Customer must be selected.";
             if (trip.VehicleID <= 0)
                 return "A valid Vehicle must be selected.";

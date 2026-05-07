@@ -567,7 +567,7 @@
                     <path d="M10 14h8c5.523 0 10 4.477 10 10v6c0 5.523-4.477 10-10 10h-8V14z" fill="#0D1520"/>
                     <!-- N shape with teal gradient -->
                     <defs>
-                        <linearGradient id="ng" x1="31" y1="8" x2="50" y2="46" gradientUnits="userSpaceOnUse">
+                        <linearGradient id="ng" x1="31" y1="8" x2="50" y2="46" gradientUnits="CustomerspaceOnUse">
                             <stop offset="0%" stop-color="#1A2332"/>
                             <stop offset="100%" stop-color="#0D9488"/>
                         </linearGradient>
@@ -668,7 +668,7 @@
         <div class="stats-grid">
             <div class="reveal">
                 <div class="stat-num" data-target="500" data-suffix="+">0</div>
-                <div class="stat-lbl">Happy Users</div>
+                <div class="stat-lbl">Happy Customers</div>
             </div>
             <div class="reveal">
                 <div class="stat-num" data-target="50" data-suffix="+">0</div>
@@ -898,7 +898,7 @@
     <section class="cta-section" id="contact">
         <div class="reveal">
             <h2 class="cta-title">Ready to hit the road?</h2>
-            <p class="cta-sub">Join hundreds of satisfied Users who trust DriveNow for every journey.</p>
+            <p class="cta-sub">Join hundreds of satisfied Customers who trust DriveNow for every journey.</p>
             <div class="cta-actions">
                 <button type="button" class="btn btn-teal btn-lg" onclick="openModal('m-register')">Create Free Account</button>
                 <button type="button" class="btn btn-teal-outline btn-lg" onclick="openModal('m-login')">Sign In</button>
@@ -912,7 +912,7 @@
             <svg width="26" height="26" viewBox="0 0 54 54" fill="none">
                 <path d="M4 8h16c8.284 0 15 6.716 15 15v8c0 8.284-6.716 15-15 15H4V8z" fill="#1A2332"/>
                 <path d="M10 14h8c5.523 0 10 4.477 10 10v6c0 5.523-4.477 10-10 10h-8V14z" fill="#0D1520"/>
-                <defs><linearGradient id="ng2" x1="31" y1="8" x2="50" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1A2332"/><stop offset="100%" stop-color="#0D9488"/></linearGradient></defs>
+                <defs><linearGradient id="ng2" x1="31" y1="8" x2="50" y2="46" gradientUnits="CustomerspaceOnUse"><stop offset="0%" stop-color="#1A2332"/><stop offset="100%" stop-color="#0D9488"/></linearGradient></defs>
                 <path d="M31 8h6l13 22V8h4v38h-6L35 24v22h-4V8z" fill="url(#ng2)"/>
             </svg>
             <span class="footer-logo-text">Drive<span>Now</span></span>

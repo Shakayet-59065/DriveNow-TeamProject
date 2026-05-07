@@ -25,8 +25,8 @@ namespace DriveNow
             if (!IsPostBack)
             {
                 // Display logged-in username in sidebar
-                lblUsername.Text = Session["Username"] != null
-                    ? Session["Username"].ToString()
+                lblUsername.Text = Session["CustomerName"] != null
+                    ? Session["CustomerName"].ToString()
                     : "Admin";
 
                 // Display today's date in the top bar
@@ -64,9 +64,9 @@ namespace DriveNow
                         lblTripTypeCount.Text = cmd.ExecuteScalar().ToString();
                     }
 
-                    // Count active Users from tblUser
+                    // Count active Customers from tblCustomer
                     using (SqlCommand cmd = new SqlCommand(
-                        "SELECT COUNT(*) FROM tblUser WHERE IsActive = 1", conn))
+                        "SELECT COUNT(*) FROM tblCustomer WHERE IsActive = 1", conn))
                     {
                         lblCustomerCount.Text = cmd.ExecuteScalar().ToString();
                     }

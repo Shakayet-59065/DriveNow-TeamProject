@@ -14,12 +14,12 @@ namespace DriveNow
         protected void Page_Load(object sender, EventArgs e)
         {
             // If customer already logged in, send straight to portal
-            if (Session["UserLoggedIn"] != null && (bool)Session["UserLoggedIn"])
+            if (Session["CustomerLoggedIn"] != null && (bool)Session["CustomerLoggedIn"])
                 Response.Redirect("CustomerPortal.aspx");
         }
 
         /// <summary>
-        /// Customer login button — validates credentials against tblUser
+        /// Customer login button — validates credentials against tblCustomer
         /// On success sets session and redirects to CustomerPortal.aspx
         /// This will be fully implemented by Tahmid's customer component
         /// For now uses prototype check — replace with spCustomerLogin stored procedure
@@ -45,10 +45,10 @@ namespace DriveNow
             {
                 // Set customer session values
                 // These will be populated from the database by Tahmid's component
-                Session["UserLoggedIn"] = true;
-                Session["UserId"] = 1;
-                Session["UserName"] = "Test Customer";
-                Session["UserEmail"] = email;
+                Session["CustomerLoggedIn"] = true;
+                Session["CustomerId"] = 1;
+                Session["CustomerName"] = "Test Customer";
+                Session["CustomerEmail"] = email;
 
                 // Redirect to the customer portal dashboard
                 Response.Redirect("CustomerPortal.aspx");
@@ -95,10 +95,10 @@ namespace DriveNow
 
             // TODO: Replace with Tahmid's spAddCustomer stored procedure
             // For prototype: simulate successful registration and auto-login
-            Session["UserLoggedIn"] = true;
-            Session["UserId"] = 1;
-            Session["UserName"] = name;
-            Session["UserEmail"] = email;
+            Session["CustomerLoggedIn"] = true;
+            Session["CustomerId"] = 1;
+            Session["CustomerName"] = name;
+            Session["CustomerEmail"] = email;
 
             // Redirect to portal after successful registration
             Response.Redirect("CustomerPortal.aspx");

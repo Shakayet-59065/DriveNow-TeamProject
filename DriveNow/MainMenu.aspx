@@ -23,7 +23,7 @@
             <a href="TripList.aspx"    class="dn-nav-item"><span class="dn-nav-icon">🛣</span>Trips</a>
             <a href="TripTypeList.aspx" class="dn-nav-item"><span class="dn-nav-icon">🏷</span>Trip Types</a>
             <div class="dn-nav-label">Team</div>
-            <a href="#" class="dn-nav-item"><span class="dn-nav-icon">👤</span>Users</a>
+            <a href="#" class="dn-nav-item"><span class="dn-nav-icon">👤</span>Customers</a>
             <a href="#" class="dn-nav-item"><span class="dn-nav-icon">🚗</span>Drivers</a>
             <a href="#" class="dn-nav-item"><span class="dn-nav-icon">🚙</span>Vehicles</a>
             <a href="#" class="dn-nav-item"><span class="dn-nav-icon">📝</span>Contributors</a>
@@ -78,7 +78,7 @@
                 </div>
                 <div class="dn-stat dn-stat-3">
                     <div class="dn-stat-num"><asp:Label ID="lblCustomerCount" runat="server">0</asp:Label></div>
-                    <div class="dn-stat-label">Users</div>
+                    <div class="dn-stat-label">Customers</div>
                 </div>
                 <div class="dn-stat dn-stat-4">
                     <div class="dn-stat-num"><asp:Label ID="lblDriverCount"   runat="server">0</asp:Label></div>
@@ -119,7 +119,7 @@
                                 <span class="dn-trip-id">#TRP-00<%# Eval("TripID") %></span>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:BoundField DataField="UserId" HeaderText="Customer ID" />
+                        <asp:BoundField DataField="CustomerId" HeaderText="Customer ID" />
                         <asp:BoundField DataField="VehicleID"  HeaderText="Vehicle ID" />
                         <asp:BoundField DataField="DriverID"   HeaderText="Driver ID" NullDisplayText="Self-Drive" />
                         <asp:TemplateField HeaderText="Trip Type">
@@ -162,10 +162,10 @@
                     </div>
                 </a>
 
-                <!-- Users — Tahmid -->
+                <!-- Customers — Tahmid -->
                 <div class="dn-stat dn-stat-3">
                     <div style="font-size:20px;margin-bottom:8px">👤</div>
-                    <div class="dn-stat-num" style="font-size:18px">Users</div>
+                    <div class="dn-stat-num" style="font-size:18px">Customers</div>
                     <div class="dn-stat-label">Tahmid</div>
                 </div>
 

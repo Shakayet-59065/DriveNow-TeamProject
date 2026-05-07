@@ -42,13 +42,13 @@ namespace DriveNow
         protected global::System.Web.UI.WebControls.Label lblSuccess;
 
         /// <summary>
-        /// txtUserId control.
+        /// txtCustomerId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtUserId;
+        protected global::System.Web.UI.WebControls.TextBox txtCustomerId;
 
         /// <summary>
         /// txtVehicleID control.

@@ -19,7 +19,7 @@
             <a href="TripList.aspx"     class="dn-nav-item active"><span class="dn-nav-icon">🛣</span>Trips</a>
             <a href="TripTypeList.aspx" class="dn-nav-item"><span class="dn-nav-icon">🏷</span>Trip Types</a>
             <div class="dn-nav-label">Team</div>
-            <a href="#" class="dn-nav-item"><span class="dn-nav-icon">👤</span>Users</a>
+            <a href="#" class="dn-nav-item"><span class="dn-nav-icon">👤</span>Customers</a>
             <a href="#" class="dn-nav-item"><span class="dn-nav-icon">🚗</span>Drivers</a>
             <a href="#" class="dn-nav-item"><span class="dn-nav-icon">🚙</span>Vehicles</a>
             <a href="#" class="dn-nav-item"><span class="dn-nav-icon">📝</span>Contributors</a>
@@ -57,7 +57,7 @@
                 <!-- Customer ID -->
                 <div class="dn-field">
                     <label class="dn-label">Customer ID <span class="required">*</span></label>
-                    <asp:TextBox ID="txtUserId" runat="server" CssClass="dn-input" placeholder="Enter Customer ID" />
+                    <asp:TextBox ID="txtCustomerId" runat="server" CssClass="dn-input" placeholder="Enter Customer ID" />
                     <div class="dn-hint">Enter the ID of the customer who booked this trip.</div>
                 </div>
 

@@ -54,15 +54,15 @@ namespace DriveNow
         {
             Trip trip = new Trip();
 
-            // Validate and parse UserId
-            int UserId;
-            if (!int.TryParse(txtUserId.Text.Trim(), out UserId) || UserId <= 0)
+            // Validate and parse CustomerId
+            int CustomerId;
+            if (!int.TryParse(txtCustomerId.Text.Trim(), out CustomerId) || CustomerId <= 0)
             {
                 lblError.Text = "Please enter a valid Customer ID.";
                 lblError.Visible = true;
                 return;
             }
-            trip.UserId = UserId;
+            trip.CustomerId = CustomerId;
 
             // Validate and parse VehicleID
             int vehicleID;

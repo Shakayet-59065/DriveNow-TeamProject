@@ -45,7 +45,7 @@ namespace DriveNow
             {
                 // Store login state and username in session
                 Session["LoggedIn"] = true;
-                Session["Username"] = username;
+                Session["CustomerName"] = username;
 
                 // Redirect to the main dashboard
                 Response.Redirect("MainMenu.aspx");
