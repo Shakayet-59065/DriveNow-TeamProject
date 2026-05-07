@@ -57,7 +57,7 @@
 
                 <div class="dn-field">
                     <label class="dn-label">Customer ID <span class="required">*</span></label>
-                    <asp:TextBox ID="txtCustomerID" runat="server" CssClass="dn-input" />
+                    <asp:TextBox ID="txtUserId" runat="server" CssClass="dn-input" />
                 </div>
                 <div class="dn-field">
                     <label class="dn-label">Vehicle ID <span class="required">*</span></label>

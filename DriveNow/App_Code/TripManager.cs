@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
+// DriveNow — TripManager Middle Layer
+// Handles all business logic and database operations for
+// Trip Records and Trip Type Catalogue components.
+// Developer: Musanna | CTEC2713N | Niels Brock Copenhagen
+
 namespace DriveNow
 {
     /// <summary>
@@ -14,8 +19,8 @@ namespace DriveNow
         /// <summary>Unique identifier for the trip. Primary key.</summary>
         public int TripID { get; set; }
 
-        /// <summary>Foreign key referencing tblCustomer.</summary>
-        public int CustomerID { get; set; }
+        /// <summary>Foreign key referencing tblUser.</summary>
+        public int UserId { get; set; }
 
         /// <summary>Foreign key referencing tblVehicle.</summary>
         public int VehicleID { get; set; }
@@ -176,7 +181,8 @@ namespace DriveNow
 
         /// <summary>
         /// Soft deletes a trip type. Calls spDeleteTripType.
-        /// Never hard deletes.
+        /// Sets IsActive = 0 — never uses SQL DELETE.
+        /// Record preserved for audit trail and FK integrity.
         /// </summary>
         public void DeleteTripType(int tripTypeID)
         {
@@ -222,7 +228,7 @@ namespace DriveNow
 
         /// <summary>
         /// Validates a TripType before database write.
-        /// Returns error message or empty string if valid.
+        /// Returns error message string, or empty string if valid.
         /// </summary>
         public string ValidateTripType(TripType tripType)
         {
@@ -259,7 +265,7 @@ namespace DriveNow
                         trips.Add(new Trip
                         {
                             TripID = (int)reader["TripID"],
-                            CustomerID = (int)reader["CustomerID"],
+                            UserId = (int)reader["UserId"],
                             VehicleID = (int)reader["VehicleID"],
                             DriverID = reader["DriverID"] == DBNull.Value ? (int?)null : (int)reader["DriverID"],
                             TripTypeID = (int)reader["TripTypeID"],
@@ -292,7 +298,7 @@ namespace DriveNow
                         trip = new Trip
                         {
                             TripID = (int)reader["TripID"],
-                            CustomerID = (int)reader["CustomerID"],
+                            UserId = (int)reader["UserId"],
                             VehicleID = (int)reader["VehicleID"],
                             DriverID = reader["DriverID"] == DBNull.Value ? (int?)null : (int)reader["DriverID"],
                             TripTypeID = (int)reader["TripTypeID"],
@@ -318,7 +324,7 @@ namespace DriveNow
             using (SqlCommand cmd = new SqlCommand("spAddTrip", conn))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@CustomerID", trip.CustomerID);
+                cmd.Parameters.AddWithValue("@UserId", trip.UserId);
                 cmd.Parameters.AddWithValue("@VehicleID", trip.VehicleID);
                 cmd.Parameters.AddWithValue("@DriverID", trip.DriverID.HasValue ? (object)trip.DriverID.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@TripTypeID", trip.TripTypeID);
@@ -342,7 +348,7 @@ namespace DriveNow
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@TripID", trip.TripID);
-                cmd.Parameters.AddWithValue("@CustomerID", trip.CustomerID);
+                cmd.Parameters.AddWithValue("@UserId", trip.UserId);
                 cmd.Parameters.AddWithValue("@VehicleID", trip.VehicleID);
                 cmd.Parameters.AddWithValue("@DriverID", trip.DriverID.HasValue ? (object)trip.DriverID.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@TripTypeID", trip.TripTypeID);
@@ -353,7 +359,8 @@ namespace DriveNow
 
         /// <summary>
         /// Soft deletes a trip. Calls spDeleteTrip.
-        /// Never hard deletes.
+        /// Sets IsActive = 0 — never uses SQL DELETE.
+        /// Preserves record for audit trail and GDPR compliance.
         /// </summary>
         public void DeleteTrip(int tripID)
         {
@@ -367,7 +374,8 @@ namespace DriveNow
         }
 
         /// <summary>
-        /// Filters trips by trip type and/or date. Calls spFilterTrips.
+        /// Filters trips by optional trip type and/or date. Calls spFilterTrips.
+        /// Passing null for either parameter returns all active trips.
         /// </summary>
         public List<Trip> FilterTrips(int? tripTypeID, DateTime? tripDate)
         {
@@ -386,7 +394,7 @@ namespace DriveNow
                         trips.Add(new Trip
                         {
                             TripID = (int)reader["TripID"],
-                            CustomerID = (int)reader["CustomerID"],
+                            UserId = (int)reader["UserId"],
                             VehicleID = (int)reader["VehicleID"],
                             DriverID = reader["DriverID"] == DBNull.Value ? (int?)null : (int)reader["DriverID"],
                             TripTypeID = (int)reader["TripTypeID"],
@@ -401,12 +409,57 @@ namespace DriveNow
         }
 
         /// <summary>
+        /// Returns all active trips for a specific customer.
+        /// Used by the customer portal — filters by UserId so Users
+        /// never see each other's data. GDPR data isolation requirement.
+        /// Calls spListTripsByUser.
+        /// </summary>
+        public List<Trip> ListTripsByUser(int UserId)
+        {
+            List<Trip> trips = new List<Trip>();
+
+            try
+            {
+                using (SqlConnection conn = DatabaseHelper.GetConnection())
+                using (SqlCommand cmd = new SqlCommand("spListTripsByUser", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", UserId);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            trips.Add(new Trip
+                            {
+                                TripID = (int)reader["TripID"],
+                                UserId = (int)reader["UserId"],
+                                VehicleID = (int)reader["VehicleID"],
+                                DriverID = reader["DriverID"] == DBNull.Value ? (int?)null : (int)reader["DriverID"],
+                                TripTypeID = (int)reader["TripTypeID"],
+                                TypeName = reader["TypeName"].ToString(),
+                                TripDate = (DateTime)reader["TripDate"],
+                                IsActive = (bool)reader["IsActive"]
+                            });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error listing trips by customer: " + ex.Message);
+            }
+
+            return trips;
+        }
+
+        /// <summary>
         /// Validates a Trip before database write.
-        /// Returns error message or empty string if valid.
+        /// Returns error message string, or empty string if valid.
         /// </summary>
         public string ValidateTrip(Trip trip)
         {
-            if (trip.CustomerID <= 0)
+            if (trip.UserId <= 0)
                 return "A valid Customer must be selected.";
             if (trip.VehicleID <= 0)
                 return "A valid Vehicle must be selected.";
@@ -416,5 +469,6 @@ namespace DriveNow
                 return "Trip Date cannot be in the past.";
             return string.Empty;
         }
-    }
-}
+
+    } // ← TripManager class closes here
+}     // ← DriveNow namespace closes here

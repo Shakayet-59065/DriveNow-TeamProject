@@ -66,7 +66,7 @@ namespace DriveNow
 
             // Pre-fill form with existing values
             hdnTripID.Value = trip.TripID.ToString();
-            txtCustomerID.Text = trip.CustomerID.ToString();
+            txtUserId.Text = trip.UserId.ToString();
             txtVehicleID.Text = trip.VehicleID.ToString();
             txtDriverID.Text = trip.DriverID.HasValue ? trip.DriverID.Value.ToString() : "";
             txtTripDate.Text = trip.TripDate.ToString("dd/MM/yyyy");
@@ -84,14 +84,14 @@ namespace DriveNow
             Trip trip = new Trip();
             trip.TripID = int.Parse(hdnTripID.Value);
 
-            int customerID;
-            if (!int.TryParse(txtCustomerID.Text.Trim(), out customerID) || customerID <= 0)
+            int UserId;
+            if (!int.TryParse(txtUserId.Text.Trim(), out UserId) || UserId <= 0)
             {
                 lblError.Text = "Please enter a valid Customer ID.";
                 lblError.Visible = true;
                 return;
             }
-            trip.CustomerID = customerID;
+            trip.UserId = UserId;
 
             int vehicleID;
             if (!int.TryParse(txtVehicleID.Text.Trim(), out vehicleID) || vehicleID <= 0)

@@ -119,7 +119,7 @@
                                 <span class="dn-trip-id">#TRP-00<%# Eval("TripID") %></span>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:BoundField DataField="CustomerID" HeaderText="Customer ID" />
+                        <asp:BoundField DataField="UserId" HeaderText="Customer ID" />
                         <asp:BoundField DataField="VehicleID"  HeaderText="Vehicle ID" />
                         <asp:BoundField DataField="DriverID"   HeaderText="Driver ID" NullDisplayText="Self-Drive" />
                         <asp:TemplateField HeaderText="Trip Type">

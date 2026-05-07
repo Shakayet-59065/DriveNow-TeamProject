@@ -57,7 +57,7 @@
                 <!-- Customer ID -->
                 <div class="dn-field">
                     <label class="dn-label">Customer ID <span class="required">*</span></label>
-                    <asp:TextBox ID="txtCustomerID" runat="server" CssClass="dn-input" placeholder="Enter Customer ID" />
+                    <asp:TextBox ID="txtUserId" runat="server" CssClass="dn-input" placeholder="Enter Customer ID" />
                     <div class="dn-hint">Enter the ID of the customer who booked this trip.</div>
                 </div>
 

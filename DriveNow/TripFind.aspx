@@ -86,7 +86,7 @@
                     <div class="dn-result-row">
                         <div class="dn-result-field">
                             <div class="dn-result-label">Customer ID</div>
-                            <div class="dn-result-value"><asp:Label ID="lblCustomerID" runat="server" /></div>
+                            <div class="dn-result-value"><asp:Label ID="lblUserId" runat="server" /></div>
                         </div>
                         <div class="dn-result-field">
                             <div class="dn-result-label">Vehicle ID</div>
