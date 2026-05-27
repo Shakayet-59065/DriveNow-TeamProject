@@ -3,6 +3,9 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+# Claude Code agent working directory (worktrees, temp files)
+.claude/
+
 # dotenv files
 .env
 

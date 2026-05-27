@@ -374,6 +374,28 @@ END;
 GO
 
 -- =============================================
+-- STEP 11 — Advanced filter stored procedure for TripTypeFilter.aspx
+-- =============================================
+
+-- Advanced filter: status and/or base rate range
+CREATE PROCEDURE spFilterTripTypesAdvanced
+    @IsActive  BIT          = NULL,
+    @MinRate   DECIMAL(8,2) = NULL,
+    @MaxRate   DECIMAL(8,2) = NULL
+AS
+BEGIN
+    -- Return trip types matching all supplied filter criteria.
+    -- NULL parameter means skip that criterion (return all for that field).
+    SELECT TripTypeID, TypeName, Description, BaseRate, CreatedDate, IsActive
+    FROM   tblTripType
+    WHERE  (@IsActive IS NULL OR IsActive  = @IsActive)
+    AND    (@MinRate  IS NULL OR BaseRate  >= @MinRate)
+    AND    (@MaxRate  IS NULL OR BaseRate  <= @MaxRate)
+    ORDER BY TripTypeID;
+END;
+GO
+
+-- =============================================
 -- VERIFICATION — Run this to confirm everything
 -- =============================================
 

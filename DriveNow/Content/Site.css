@@ -8,7 +8,29 @@
 /* ── GOOGLE FONTS ────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap');
 
-/* ── RESET ───────────────────────────────────────────────── */
+/* ── MATERIAL SYMBOLS BASE CLASS ─────────────────────────── */
+/* Required for icons to render as glyphs, not letters.
+   Font is loaded via <link> tag in each page <head>.        */
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined', sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'liga';
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ── RESET ─────────────────────────────────────────────── */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -35,7 +57,7 @@ body {
    SIDEBAR
    ============================================================ */
 .dn-sidebar {
-    width: 210px;
+    width: 240px;
     background: #1a2332;
     display: flex;
     flex-direction: column;
@@ -173,7 +195,7 @@ body {
    MAIN CONTENT AREA
    ============================================================ */
 .dn-main {
-    margin-left: 210px;
+    margin-left: 240px;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -413,6 +435,7 @@ body {
     border: 1px solid #e5eaef;
     border-radius: 10px;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 table.dn-table {
@@ -505,30 +528,55 @@ table.dn-table {
     background: #ef4444;
 }
 
-/* Action links in table */
+/* Action buttons in table rows — solid pill style for easy scanning */
 .dn-action-edit {
-    font-size: 12px;
-    color: #0d9488;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    background: #0d9488;
+    border: none;
+    border-radius: 5px;
+    padding: 4px 10px;
     cursor: pointer;
-    margin-right: 12px;
-    font-weight: 500;
+    margin-right: 5px;
     text-decoration: none;
+    line-height: 1.4;
+    transition: background 0.15s, transform 0.1s;
+    font-family: 'DM Sans', Arial, sans-serif;
+    vertical-align: middle;
 }
 
     .dn-action-edit:hover {
-        text-decoration: underline;
+        background: #0a7a6f;
+        color: #fff;
+        text-decoration: none;
+        transform: translateY(-1px);
     }
 
 .dn-action-del {
-    font-size: 12px;
-    color: #ef4444;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    background: #ef4444;
+    border: none;
+    border-radius: 5px;
+    padding: 4px 10px;
     cursor: pointer;
-    font-weight: 500;
+    margin-right: 5px;
     text-decoration: none;
+    line-height: 1.4;
+    transition: background 0.15s, transform 0.1s;
+    font-family: 'DM Sans', Arial, sans-serif;
+    vertical-align: middle;
 }
 
     .dn-action-del:hover {
-        text-decoration: underline;
+        background: #dc2626;
+        color: #fff;
+        text-decoration: none;
+        transform: translateY(-1px);
     }
 
 /* ============================================================
@@ -801,89 +849,589 @@ table.dn-table {
 /* ============================================================
    RESPONSIVE
    ============================================================ */
-@media (max-width: 900px) {
-    .dn-sidebar {
-        width: 180px;
-    }
-
-    .dn-main {
-        margin-left: 180px;
-    }
+/* ============================================================
+   SIDEBAR ACTION BUTTONS
+   ============================================================ */
+.dn-sidebar-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 7px;
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    transition: all 0.15s;
+    margin-bottom: 5px;
+    font-family: 'DM Sans', Arial, sans-serif;
+    text-align: left;
+    box-sizing: border-box;
 }
 
-@media (max-width: 768px) {
+.dn-sidebar-btn-primary {
+    background: #0d9488;
+    color: #fff;
+}
+
+    .dn-sidebar-btn-primary:hover {
+        background: #0f766e;
+        color: #fff;
+        text-decoration: none;
+    }
+
+.dn-sidebar-btn-secondary {
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.6);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+    .dn-sidebar-btn-secondary:hover {
+        background: rgba(255,255,255,0.1);
+        color: rgba(255,255,255,0.85);
+        text-decoration: none;
+    }
+
+/* Status pills inside sidebar — override light-mode pill defaults */
+.dn-sidebar-pills {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 0 0 6px;
+}
+
+    .dn-sidebar-pills .dn-pill {
+        background: rgba(255,255,255,0.05);
+        color: rgba(255,255,255,0.45);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 6px;
+        font-size: 12px;
+        padding: 6px 12px;
+        display: block;
+        text-decoration: none;
+        transition: all 0.15s;
+    }
+
+    .dn-sidebar-pills .dn-pill:hover {
+        background: rgba(255,255,255,0.09);
+        color: rgba(255,255,255,0.75);
+        border-color: rgba(255,255,255,0.18);
+        text-decoration: none;
+    }
+
+    .dn-sidebar-pills .dn-pill.active {
+        background: rgba(13,148,136,0.2);
+        color: #2dd4bf;
+        border-color: rgba(13,148,136,0.4);
+        font-weight: 500;
+    }
+
+/* Topbar: only title + subtitle, no action buttons */
+.dn-topbar-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.dn-topbar-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* ============================================================
+   PERMANENT DELETE BUTTON
+   ============================================================ */
+.dn-action-perm-del {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    background: #7c3aed;
+    border: none;
+    border-radius: 5px;
+    padding: 4px 10px;
+    cursor: pointer;
+    margin-right: 5px;
+    text-decoration: none;
+    line-height: 1.4;
+    transition: background 0.15s, transform 0.1s;
+    font-family: 'DM Sans', Arial, sans-serif;
+    vertical-align: middle;
+}
+
+.dn-action-perm-del:hover {
+    background: #6d28d9;
+    color: #fff;
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+/* Hamburger button — hidden by default on desktop, shown on phones via media query */
+.dn-mobile-menu-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    background: rgba(255,255,255,.08);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1.3rem;
+    cursor: pointer;
+    border: none;
+}
+
+/* ============================================================
+   SECTION ACTION BAR (above table on list pages)
+   ============================================================ */
+.dn-action-bar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+
+/* ── Tablet landscape / small desktop: 900–1100px ── */
+@media (max-width: 1100px) {
+    .dn-sidebar { width: 210px; }
+    .dn-main    { margin-left: 210px; }
+    .dn-topbar  { padding: 14px 18px; }
+    .dn-content { padding: 18px 18px 32px; }
+}
+
+/* ── Tablet portrait: 600–899px — compact sidebar ── */
+@media (max-width: 899px) {
+    .dn-sidebar {
+        width: 64px;          /* icon-only strip */
+        overflow: hidden;
+    }
+    .dn-sidebar-logo { padding: 14px 10px 12px; text-align: center; }
+    .dn-sidebar-logo span { display: none; } /* hide "DriveNow Admin" text */
+    .dn-nav-label { display: none; }
+    /* Nav items: just the icon, centered */
+    .dn-nav-item {
+        justify-content: center;
+        padding: 10px 0;
+        font-size: 0;         /* hide label text */
+        gap: 0;
+    }
+    .dn-nav-item .material-symbols-outlined {
+        font-size: 20px !important;
+        margin-right: 0;
+    }
+    .dn-sidebar-module { display: none; }
+    .dn-sidebar-footer { display: none; }
+    .dn-main { margin-left: 64px; }
+
+    /* Topbar */
+    .dn-topbar { flex-direction: column; align-items: flex-start; gap: 10px; padding: 12px 14px; }
+    .dn-topbar-right { flex-wrap: wrap; gap: 6px; }
+    .dn-page-title { font-size: 1.05rem; }
+
+    /* Content */
+    .dn-content { padding: 14px 14px 28px; }
+    .dn-stats { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .dn-stat-card { padding: 14px; }
+
+    /* Table: allow horizontal scroll */
+    .dn-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .dn-table { min-width: 640px; }
+
+    /* Forms */
+    .dn-form-card { padding: 16px; }
+    .dn-form-row  { flex-direction: column; gap: 12px; }
+    .dn-filter-row { flex-direction: column; }
+    .dn-result-row { flex-direction: column; gap: 12px; }
+
+    /* Pills filter bar */
+    .dn-pills { flex-wrap: wrap; gap: 6px; }
+}
+
+/* ── Phone: up to 599px ── */
+@media (max-width: 599px) {
+    /* Fix 8: Shell is block — no sidebar gap reserved */
     .dn-shell {
-        flex-direction: column;
+        display: block;
     }
 
+    /* Fix 1: Sidebar slides off-screen on phones — toggled by JS via .sidebar-open on <body> */
     .dn-sidebar {
-        position: relative;
-        width: 100%;
-        height: auto;
-        flex-direction: row;
-        flex-wrap: wrap;
+        position: fixed;
+        left: -260px;
+        top: 0;
+        height: 100%;
+        z-index: 1000;
+        transition: left 0.28s ease;
+        overflow-y: auto;
+        width: 240px;
+        flex-direction: column;
     }
-
-    .dn-sidebar-nav {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 4px;
-        padding: 8px;
+    body.sidebar-open .dn-sidebar {
+        left: 0;
     }
-
-    .dn-nav-label {
-        display: none;
+    body.sidebar-open::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        z-index: 999;
     }
-
-    .dn-sidebar-footer {
-        display: none;
-    }
-
     .dn-main {
-        margin-left: 0;
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+    /* Fix 1: Hamburger button shown on phones */
+    .dn-mobile-menu-btn {
+        display: flex !important;
     }
 
+    /* Fix 2: Topbar mobile layout */
+    .dn-topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: .5rem;
+        padding: .75rem 1rem;
+    }
+    .dn-topbar-right {
+        flex-wrap: wrap;
+        gap: .4rem;
+        width: 100%;
+    }
+    .dn-topbar-right .dn-btn {
+        font-size: .72rem;
+        padding: .3rem .7rem;
+    }
+
+    .dn-content { padding: 12px 12px 24px; }
+
+    /* Fix 10: Stat cards responsive */
     .dn-stats {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr 1fr;
+        gap: .75rem;
+    }
+    .dn-stat {
+        padding: 14px 12px;
+    }
+    .dn-stat-num {
+        font-size: 1.5rem;
     }
 
-    .dn-page-header {
-        flex-direction: column;
+    /* Fix 4: Table horizontal scroll */
+    .dn-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; }
+    .dn-table {
+        min-width: 540px;
+        font-size: 12px;
+    }
+    .dn-table th, .dn-table td {
+        padding: 8px 10px;
+        white-space: nowrap;
     }
 
-    .dn-filter-row {
-        flex-direction: column;
-    }
-
+    /* Fix 5: Form card padding */
     .dn-form-card {
-        padding: 18px;
+        padding: 16px;
+        border-radius: 8px;
+    }
+    .dn-form-row  { flex-direction: column; gap: 10px; }
+    .dn-btn { font-size: .8rem; }
+    .dn-form-actions { flex-direction: column; gap: 8px; }
+    .dn-form-actions .dn-btn { width: 100%; justify-content: center; }
+
+    /* Fix 6: Pills/tabs wrap */
+    .dn-pills {
+        flex-wrap: wrap;
+        gap: .4rem;
+    }
+    .dn-pill {
+        font-size: .72rem;
+        padding: .3rem .75rem;
     }
 
-    .dn-result-row {
-        flex-direction: column;
-        gap: 14px;
+    /* Fix 7: Action buttons wrap in table cells */
+    .dn-action-edit,
+    .dn-action-del,
+    .dn-action-perm-del {
+        margin-bottom: 3px;
+        display: inline-block;
     }
+
+    /* Stitch filter bar stacks on phone */
+    .st-filter-bar { flex-wrap: wrap; gap: 8px; }
+    .st-filter-bar input[type=text] { min-width: 100%; }
+
+    /* Sidebar sub-elements reset for vertical layout */
+    .dn-sidebar-footer { display: none; }
+    .dn-sidebar-module { display: none; }
+    .dn-nav-label { display: none; }
 }
 
-@media (max-width: 480px) {
+/* ── Very small phones: up to 380px ── */
+@media (max-width: 380px) {
+    /* Fix 3: Stats grid — 1 column at 380px */
     .dn-stats {
         grid-template-columns: 1fr 1fr;
     }
-
-    .dn-content {
-        padding: 14px 14px 24px;
+    .dn-stat-4, .dn-stat-3 {
+        grid-column: span 1;
     }
 
-    .dn-btn {
-        width: 100%;
-        justify-content: center;
+    /* Fix 3: Content and topbar padding */
+    .dn-content { padding: .75rem; }
+    .dn-topbar  { padding: .6rem .75rem; }
+
+    .dn-table { min-width: 520px; font-size: .78rem; }
+    .dn-btn { padding: .4rem .8rem; font-size: .78rem; }
+
+    /* Fix 5: Form card padding at very small screens */
+    .dn-form-card {
+        padding: 12px;
     }
 
-    .dn-form-actions {
-        flex-direction: column;
+    /* Fix 9: Login box at 380px */
+    .dn-login-box {
+        padding: 24px 16px;
+        border-radius: 10px;
     }
-
-        .dn-form-actions .dn-btn {
-            width: 100%;
-        }
 }
+
+/* ============================================================
+   ANIMATIONS & MICRO-INTERACTIONS
+   ============================================================ */
+
+/* Page content fade-up on load */
+@keyframes dnFadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: none; }
+}
+.dn-content {
+    animation: dnFadeUp .4s ease;
+}
+
+/* Table row hover lift */
+.dn-table tbody tr {
+    transition: background .15s, box-shadow .15s;
+}
+.dn-table tbody tr:hover {
+    background: rgba(13, 148, 136, .05);
+    box-shadow: inset 3px 0 0 #14b8a6;
+}
+
+/* Sticky table headers */
+.dn-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: #fff;
+}
+
+/* Button press feedback */
+.dn-btn:active {
+    transform: scale(.96);
+}
+
+/* Form card hover border glow */
+.dn-form-card {
+    transition: box-shadow .25s;
+}
+.dn-form-card:hover {
+    box-shadow: 0 0 0 1px rgba(20, 184, 166, .15), 0 8px 24px rgba(0,0,0,.07);
+}
+
+/* Input focus ring */
+.dn-input:focus,
+.dn-select:focus {
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, .18);
+}
+
+/* Sidebar nav item slide-in indicator */
+.dn-nav-item {
+    transition: background .15s, color .15s, padding-left .15s;
+}
+.dn-nav-item:hover {
+    padding-left: 20px;
+}
+
+/* Alert slide-down */
+@keyframes dnSlideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: none; }
+}
+.dn-alert-success,
+.dn-alert-error {
+    animation: dnSlideDown .3s ease;
+}
+
+/* Stat card pulse on hover (dashboard) */
+.dn-stat-card {
+    transition: transform .2s, box-shadow .2s, border-color .2s;
+}
+.dn-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(13, 148, 136, .14);
+    border-color: rgba(13, 148, 136, .35);
+}
+
+/* Action button hover — lift handled by transform in each button rule above */
+
+/* Password hint fade */
+#pwdHint {
+    transition: opacity .2s;
+}
+
+/* Smooth scrollbar in sidebar */
+.dn-sidebar::-webkit-scrollbar { width: 4px; }
+.dn-sidebar::-webkit-scrollbar-track { background: transparent; }
+.dn-sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 2px; }
+
+/* =============================================
+   STITCH DESIGN UTILITIES
+   ============================================= */
+
+/* --- Material Symbols nav icon sizing --- */
+.dn-nav-item .material-symbols-outlined {
+    font-size: 17px;
+    vertical-align: middle;
+    margin-right: 4px;
+    line-height: 1;
+    position: relative;
+    top: -1px;
+}
+
+/* --- Icon-only action buttons --- */
+.st-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid #bbcac6;
+    background: #fff;
+    color: #006b5f;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background .15s, border-color .15s, box-shadow .15s;
+    vertical-align: middle;
+    padding: 0;
+    font-size: 0;
+    line-height: 1;
+}
+.st-icon-btn .material-symbols-outlined {
+    font-size: 17px;
+    line-height: 1;
+}
+.st-icon-btn:hover {
+    background: #e9efec;
+    border-color: #006b5f;
+    box-shadow: 0 2px 8px rgba(0,107,95,.12);
+    color: #006b5f;
+    text-decoration: none;
+}
+.st-icon-btn.danger { color: #93000a; border-color: #ffdad6; }
+.st-icon-btn.danger:hover { background: #ffdad6; border-color: #93000a; }
+
+.st-actions-cell { display: flex; align-items: center; gap: 6px; }
+
+/* --- Avatar + name cell --- */
+.st-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #006b5f, #4fdbc8);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+.st-name-cell { display: flex; align-items: center; gap: 10px; }
+.st-name-primary { font-weight: 600; color: #1a2421; font-size: .88rem; line-height: 1.2; }
+.st-name-sub { font-size: .74rem; color: #6c7a77; margin-top: 1px; }
+
+/* Table row hover */
+.dn-table tbody tr:hover { background: rgba(79,219,200,.06); }
+
+/* --- Filter bar --- */
+.st-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    border: 1px solid #bbcac6;
+    border-radius: 10px;
+    padding: 8px 14px;
+    margin-bottom: 12px;
+}
+.st-filter-bar input[type=text] {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: .88rem;
+    color: #1a2421;
+    min-width: 120px;
+}
+.st-filter-bar select {
+    border: 1px solid #bbcac6;
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-size: .82rem;
+    color: #1a2421;
+    background: #f4fbf8;
+    outline: none;
+    cursor: pointer;
+}
+.st-filter-label { font-size: .78rem; color: #6c7a77; white-space: nowrap; }
+.st-filter-count { font-size: .78rem; color: #006b5f; font-weight: 600; margin-left: auto; white-space: nowrap; }
+
+/* --- Pagination strip --- */
+.st-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-top: 1px solid #e9efec;
+    font-size: .8rem;
+    color: #6c7a77;
+    background: #fff;
+}
+.st-page-btns { display: flex; gap: 4px; }
+.st-page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    border: 1px solid #bbcac6;
+    background: #fff;
+    color: #1a2421;
+    font-size: .78rem;
+    cursor: pointer;
+    padding: 0 6px;
+    transition: background .13s, border-color .13s;
+}
+.st-page-btn:hover { background: #e9efec; border-color: #006b5f; }
+.st-page-btn.active { background: #006b5f; color: #fff; border-color: #006b5f; font-weight: 700; }
+
+/* --- Stitch section alternating theme tokens --- */
+:root {
+    --st-primary: #006b5f;
+    --st-inverse-primary: #4fdbc8;
+    --st-surface: #f4fbf8;
+    --st-surface-container: #e9efec;
+    --st-outline-var: #bbcac6;
+    --st-dark: #2b3230;
+}
+
+/* Light section backgrounds */
+.st-section-light  { background: var(--st-surface); }
+.st-section-mint   { background: var(--st-surface-container); }
+.st-section-dark   { background: var(--st-dark); }
+.st-section-primary { background: var(--st-primary); }

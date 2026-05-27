@@ -37,8 +37,51 @@ namespace DriveNow
         /// <summary>The date on which the trip takes place.</summary>
         public DateTime TripDate { get; set; }
 
+        /// <summary>Drop-off date from tblCustomerTrip (null for admin-added trips with no booking).</summary>
+        public DateTime? DropoffDate { get; set; }
+
+        /// <summary>Whether the vehicle has been physically returned to the depot.</summary>
+        public bool CarReturned { get; set; }
+
         /// <summary>Soft delete flag. 1 = active, 0 = deleted.</summary>
         public bool IsActive { get; set; }
+
+        /// <summary>
+        /// Who cancelled this trip. "Customer" when the customer cancelled their own
+        /// booking; "Admin" when staff deactivated it. Only meaningful when IsActive=false.
+        /// Populated by ListInactiveTrips() from spListInactiveTrips.
+        /// </summary>
+        public string CancelledBy { get; set; }
+
+        /// <summary>
+        /// Computed status used for filtering (MainMenu active/upcoming filter).
+        /// CarReturned takes priority — a returned trip is done regardless of dates.
+        /// </summary>
+        public string TripStatus
+        {
+            get
+            {
+                if (!IsActive)    return "Cancelled";
+                if (CarReturned)  return "Car Returned";
+                if (TripDate > DateTime.Now) return "Upcoming";
+                return "In Progress";
+            }
+        }
+
+        /// <summary>
+        /// Full display label for the admin TripList status column.
+        /// Distinguishes Cancelled by Admin vs Cancelled by Customer.
+        /// </summary>
+        public string DisplayStatus
+        {
+            get
+            {
+                if (!IsActive)
+                    return CancelledBy == "Customer" ? "Cancelled by Customer" : "Cancelled by Admin";
+                if (TripDate > DateTime.Now) return "Upcoming";
+                return "In Progress";
+            }
+        }
     }
 
     /// <summary>
@@ -196,6 +239,36 @@ namespace DriveNow
         }
 
         /// <summary>
+        /// Reactivates a soft-deleted trip type. Calls spRestoreTripType.
+        /// Sets IsActive = 1 so the type reappears on the active list.
+        /// </summary>
+        public void RestoreTripType(int tripTypeID)
+        {
+            using (SqlConnection conn = DatabaseHelper.GetConnection())
+            using (SqlCommand cmd = new SqlCommand("spRestoreTripType", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@TripTypeID", tripTypeID);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
+        /// Permanently removes a trip type record. Calls spHardDeleteTripType.
+        /// Raises an error if any trips still reference this type — archive those first.
+        /// </summary>
+        public void HardDeleteTripType(int tripTypeID)
+        {
+            using (SqlConnection conn = DatabaseHelper.GetConnection())
+            using (SqlCommand cmd = new SqlCommand("spHardDeleteTripType", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@TripTypeID", tripTypeID);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
         /// Filters trip types by name keyword. Calls spFilterTripTypes.
         /// </summary>
         public List<TripType> FilterTripTypes(string typeName)
@@ -219,6 +292,45 @@ namespace DriveNow
                             BaseRate = (decimal)reader["BaseRate"],
                             CreatedDate = (DateTime)reader["CreatedDate"],
                             IsActive = (bool)reader["IsActive"]
+                        });
+                    }
+                }
+            }
+            return tripTypes;
+        }
+
+        /// <summary>
+        /// Advanced filter for trip types by active status and/or base rate range.
+        /// All three parameters are optional — pass null to skip that criterion.
+        /// Calls spFilterTripTypesAdvanced stored procedure.
+        /// Used by TripTypeFilter.aspx to filter the trip type catalogue.
+        /// </summary>
+        public List<TripType> FilterTripTypesAdvanced(bool? isActive, decimal? minRate, decimal? maxRate)
+        {
+            List<TripType> tripTypes = new List<TripType>();
+
+            using (SqlConnection conn = DatabaseHelper.GetConnection())
+            using (SqlCommand cmd = new SqlCommand("spFilterTripTypesAdvanced", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                // Pass null as DBNull so the stored procedure skips that filter
+                cmd.Parameters.AddWithValue("@IsActive", isActive.HasValue ? (object)(isActive.Value ? 1 : 0) : DBNull.Value);
+                cmd.Parameters.AddWithValue("@MinRate",  minRate.HasValue  ? (object)minRate.Value            : DBNull.Value);
+                cmd.Parameters.AddWithValue("@MaxRate",  maxRate.HasValue  ? (object)maxRate.Value            : DBNull.Value);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        tripTypes.Add(new TripType
+                        {
+                            TripTypeID  = (int)reader["TripTypeID"],
+                            TypeName    = reader["TypeName"].ToString(),
+                            Description = reader["Description"] == DBNull.Value ? "" : reader["Description"].ToString(),
+                            BaseRate    = (decimal)reader["BaseRate"],
+                            CreatedDate = (DateTime)reader["CreatedDate"],
+                            IsActive    = (bool)reader["IsActive"]
                         });
                     }
                 }
@@ -262,17 +374,31 @@ namespace DriveNow
                 {
                     while (reader.Read())
                     {
-                        trips.Add(new Trip
+                        var trip = new Trip
                         {
-                            TripID = (int)reader["TripID"],
+                            TripID     = (int)reader["TripID"],
                             CustomerId = (int)reader["CustomerId"],
-                            VehicleID = (int)reader["VehicleID"],
-                            DriverID = reader["DriverID"] == DBNull.Value ? (int?)null : (int)reader["DriverID"],
+                            VehicleID  = (int)reader["VehicleID"],
+                            DriverID   = reader["DriverID"] == DBNull.Value ? (int?)null : (int)reader["DriverID"],
                             TripTypeID = (int)reader["TripTypeID"],
-                            TypeName = reader["TypeName"].ToString(),
-                            TripDate = (DateTime)reader["TripDate"],
-                            IsActive = (bool)reader["IsActive"]
-                        });
+                            TypeName   = reader["TypeName"].ToString(),
+                            TripDate   = (DateTime)reader["TripDate"],
+                            IsActive   = (bool)reader["IsActive"]
+                        };
+                        // DropoffDate and CarReturned added by script 22 — safe to skip if not yet present
+                        try
+                        {
+                            int ord = reader.GetOrdinal("DropoffDate");
+                            trip.DropoffDate = reader.IsDBNull(ord) ? (DateTime?)null : reader.GetDateTime(ord);
+                        }
+                        catch { /* column not yet in SP — leave null */ }
+                        try
+                        {
+                            int ord = reader.GetOrdinal("CarReturned");
+                            trip.CarReturned = !reader.IsDBNull(ord) && reader.GetBoolean(ord);
+                        }
+                        catch { /* column not yet in SP — leave false */ }
+                        trips.Add(trip);
                     }
                 }
             }
@@ -374,6 +500,36 @@ namespace DriveNow
         }
 
         /// <summary>
+        /// Reactivates a soft-deleted trip. Calls spRestoreTrip.
+        /// Sets IsActive = 1 so the trip reappears on the active list.
+        /// </summary>
+        public void RestoreTrip(int tripID)
+        {
+            using (SqlConnection conn = DatabaseHelper.GetConnection())
+            using (SqlCommand cmd = new SqlCommand("spRestoreTrip", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@TripID", tripID);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
+        /// Permanently removes a trip record from the database. Calls spHardDeleteTrip.
+        /// Removes any CustomerTrip booking rows first, then deletes the trip row.
+        /// </summary>
+        public void HardDeleteTrip(int tripID)
+        {
+            using (SqlConnection conn = DatabaseHelper.GetConnection())
+            using (SqlCommand cmd = new SqlCommand("spHardDeleteTrip", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@TripID", tripID);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
         /// Filters trips by optional trip type and/or date. Calls spFilterTrips.
         /// Passing null for either parameter returns all active trips.
         /// </summary>
@@ -406,6 +562,85 @@ namespace DriveNow
                 }
             }
             return trips;
+        }
+
+        /// <summary>
+        /// Returns all inactive (soft-deleted) trips. Calls spListInactiveTrips.
+        /// </summary>
+        public List<Trip> ListInactiveTrips()
+        {
+            List<Trip> trips = new List<Trip>();
+            using (SqlConnection conn = DatabaseHelper.GetConnection())
+            using (SqlCommand cmd = new SqlCommand("spListInactiveTrips", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var trip = new Trip
+                        {
+                            TripID     = (int)reader["TripID"],
+                            CustomerId = (int)reader["CustomerId"],
+                            VehicleID  = (int)reader["VehicleID"],
+                            DriverID   = reader["DriverID"] == DBNull.Value ? (int?)null : (int)reader["DriverID"],
+                            TripTypeID = (int)reader["TripTypeID"],
+                            TypeName   = reader["TypeName"].ToString(),
+                            TripDate   = (DateTime)reader["TripDate"],
+                            IsActive   = (bool)reader["IsActive"]
+                        };
+                        try
+                        {
+                            int ord = reader.GetOrdinal("DropoffDate");
+                            trip.DropoffDate = reader.IsDBNull(ord) ? (DateTime?)null : reader.GetDateTime(ord);
+                        }
+                        catch { }
+                        try
+                        {
+                            int ord = reader.GetOrdinal("CarReturned");
+                            trip.CarReturned = !reader.IsDBNull(ord) && reader.GetBoolean(ord);
+                        }
+                        catch { }
+                        try
+                        {
+                            int ord = reader.GetOrdinal("CancelledBy");
+                            trip.CancelledBy = reader.IsDBNull(ord) ? "Admin" : reader.GetString(ord);
+                        }
+                        catch { trip.CancelledBy = "Admin"; }
+                        trips.Add(trip);
+                    }
+                }
+            }
+            return trips;
+        }
+
+        /// <summary>
+        /// Returns all inactive (soft-deleted) trip types. Calls spListInactiveTripTypes.
+        /// </summary>
+        public List<TripType> ListInactiveTripTypes()
+        {
+            List<TripType> tripTypes = new List<TripType>();
+            using (SqlConnection conn = DatabaseHelper.GetConnection())
+            using (SqlCommand cmd = new SqlCommand("spListInactiveTripTypes", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        tripTypes.Add(new TripType
+                        {
+                            TripTypeID  = (int)reader["TripTypeID"],
+                            TypeName    = reader["TypeName"].ToString(),
+                            Description = reader["Description"] == DBNull.Value ? "" : reader["Description"].ToString(),
+                            BaseRate    = (decimal)reader["BaseRate"],
+                            CreatedDate = (DateTime)reader["CreatedDate"],
+                            IsActive    = (bool)reader["IsActive"]
+                        });
+                    }
+                }
+            }
+            return tripTypes;
         }
 
         /// <summary>
@@ -468,6 +703,23 @@ namespace DriveNow
             if (trip.TripDate < DateTime.Today)
                 return "Trip Date cannot be in the past.";
             return string.Empty;
+        }
+
+        /// <summary>
+        /// Returns one DataRow with live counts for all five dashboard stat cards.
+        /// Calls spGetDashboardStats — no inline SQL in the presentation layer.
+        /// Used by MainMenu.aspx.cs to populate the stat cards.
+        /// </summary>
+        public DataRow GetDashboardStats()
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection conn = DatabaseHelper.GetConnection())
+            using (SqlCommand cmd = new SqlCommand("spGetDashboardStats", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                new SqlDataAdapter(cmd).Fill(dt);
+            }
+            return dt.Rows.Count > 0 ? dt.Rows[0] : null;
         }
 
     } // ← TripManager class closes here

@@ -1,4 +1,5 @@
-﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -68,6 +69,12 @@
     <Content Include="Content\logo.png" />
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
+    <Content Include="Web.config" />
+    <Content Include="BookTrip.aspx" />
+    <Content Include="BrowseFleet.aspx" />
+    <Content Include="Default.aspx" />
+    <Content Include="ForgotPassword.aspx" />
+    <Content Include="Login.aspx" />
     <Content Include="Logout.aspx" />
     <Content Include="MainMenu.aspx" />
     <Content Include="TripAdd.aspx" />
@@ -77,12 +84,79 @@
     <Content Include="TripList.aspx" />
     <Content Include="TripTypeAdd.aspx" />
     <Content Include="TripTypeEdit.aspx" />
+    <Content Include="TripTypeFilter.aspx" />
+    <Content Include="TripTypeFind.aspx" />
     <Content Include="TripTypeList.aspx" />
-    <Content Include="Web.config" />
-    <Content Include="Login.aspx" />
-    <Content Include="Default.aspx" />
+    <Content Include="StaffProfile.aspx" />
+    <Content Include="AddStaff.aspx" />
+    <Content Include="VerifyEmail.aspx" />
+    <Content Include="ResendVerification.aspx" />
+    <Content Include="CustomerAdd.aspx" />
+    <Content Include="CustomerEdit.aspx" />
+    <Content Include="CustomerFilter.aspx" />
+    <Content Include="CustomerFind.aspx" />
+    <Content Include="CustomerList.aspx" />
+    <Content Include="CustomerPortal.aspx" />
+    <Content Include="DriverAdd.aspx" />
+    <Content Include="DriverDelete.aspx" />
+    <Content Include="DriverEdit.aspx" />
+    <Content Include="DriverFilter.aspx" />
+    <Content Include="DriverFind.aspx" />
+    <Content Include="DriverList.aspx" />
+    <Content Include="VehicleAdd.aspx" />
+    <Content Include="VehicleEdit.aspx" />
+    <Content Include="VehicleFilter.aspx" />
+    <Content Include="VehicleFind.aspx" />
+    <Content Include="VehicleList.aspx" />
+    <Content Include="VehicleDetail.aspx" />
+    <Content Include="BookingConfirmed.aspx" />
+    <Content Include="ContributorAdd.aspx" />
+    <Content Include="ContributorEdit.aspx" />
+    <Content Include="ContributorFilter.aspx" />
+    <Content Include="ContributorFind.aspx" />
+    <Content Include="ContributorList.aspx" />
+    <Content Include="ContributorView.aspx" />
+    <Content Include="TempPasswords.aspx" />
+    <Content Include="SetNewPassword.aspx" />
+    <Content Include="ContribVehicleAdd.aspx" />
+    <Content Include="ContribVehicleEdit.aspx" />
+    <Content Include="ContribVehicleList.aspx" />
+    <Content Include="ContributorApply.aspx" />
+    <Content Include="Careers.aspx" />
+    <Content Include="DriverDetail.aspx" />
+    <Content Include="DriverPublicProfile.aspx" />
+    <Content Include="StaffList.aspx" />
+    <Content Include="StaffEdit.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BookTrip.aspx.cs">
+      <DependentUpon>BookTrip.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BookTrip.aspx.designer.cs">
+      <DependentUpon>BookTrip.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BrowseFleet.aspx.cs">
+      <DependentUpon>BrowseFleet.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BrowseFleet.aspx.designer.cs">
+      <DependentUpon>BrowseFleet.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ForgotPassword.aspx.cs">
+      <DependentUpon>ForgotPassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ForgotPassword.aspx.designer.cs">
+      <DependentUpon>ForgotPassword.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -96,6 +170,13 @@
     </Compile>
     <Compile Include="Logout.aspx.designer.cs">
       <DependentUpon>Logout.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MainMenu.aspx.cs">
+      <DependentUpon>MainMenu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MainMenu.aspx.designer.cs">
+      <DependentUpon>MainMenu.aspx</DependentUpon>
     </Compile>
     <Compile Include="TripAdd.aspx.cs">
       <DependentUpon>TripAdd.aspx</DependentUpon>
@@ -153,26 +234,316 @@
     <Compile Include="TripTypeList.aspx.designer.cs">
       <DependentUpon>TripTypeList.aspx</DependentUpon>
     </Compile>
+    <Compile Include="TripTypeFind.aspx.cs">
+      <DependentUpon>TripTypeFind.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TripTypeFind.aspx.designer.cs">
+      <DependentUpon>TripTypeFind.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TripTypeFilter.aspx.cs">
+      <DependentUpon>TripTypeFilter.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TripTypeFilter.aspx.designer.cs">
+      <DependentUpon>TripTypeFilter.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StaffProfile.aspx.cs">
+      <DependentUpon>StaffProfile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StaffProfile.aspx.designer.cs">
+      <DependentUpon>StaffProfile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AddStaff.aspx.cs">
+      <DependentUpon>AddStaff.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddStaff.aspx.designer.cs">
+      <DependentUpon>AddStaff.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="VerifyEmail.aspx.cs">
+      <DependentUpon>VerifyEmail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VerifyEmail.aspx.designer.cs">
+      <DependentUpon>VerifyEmail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ResendVerification.aspx.cs">
+      <DependentUpon>ResendVerification.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ResendVerification.aspx.designer.cs">
+      <DependentUpon>ResendVerification.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="App_Code\EmailVerificationManager.cs" />
+    <Compile Include="App_Code\StaffPasswordResetManager.cs" />
+    <Compile Include="CustomerAdd.aspx.cs">
+      <DependentUpon>CustomerAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CustomerAdd.aspx.designer.cs">
+      <DependentUpon>CustomerAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerEdit.aspx.cs">
+      <DependentUpon>CustomerEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CustomerEdit.aspx.designer.cs">
+      <DependentUpon>CustomerEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerFilter.aspx.cs">
+      <DependentUpon>CustomerFilter.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CustomerFilter.aspx.designer.cs">
+      <DependentUpon>CustomerFilter.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerFind.aspx.cs">
+      <DependentUpon>CustomerFind.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CustomerFind.aspx.designer.cs">
+      <DependentUpon>CustomerFind.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerList.aspx.cs">
+      <DependentUpon>CustomerList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CustomerList.aspx.designer.cs">
+      <DependentUpon>CustomerList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerPortal.aspx.cs">
+      <DependentUpon>CustomerPortal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CustomerPortal.aspx.designer.cs">
+      <DependentUpon>CustomerPortal.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DriverAdd.aspx.cs">
+      <DependentUpon>DriverAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DriverAdd.aspx.designer.cs">
+      <DependentUpon>DriverAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DriverDelete.aspx.cs">
+      <DependentUpon>DriverDelete.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DriverDelete.aspx.designer.cs">
+      <DependentUpon>DriverDelete.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DriverEdit.aspx.cs">
+      <DependentUpon>DriverEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DriverEdit.aspx.designer.cs">
+      <DependentUpon>DriverEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DriverFilter.aspx.cs">
+      <DependentUpon>DriverFilter.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DriverFilter.aspx.designer.cs">
+      <DependentUpon>DriverFilter.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DriverFind.aspx.cs">
+      <DependentUpon>DriverFind.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DriverFind.aspx.designer.cs">
+      <DependentUpon>DriverFind.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DriverList.aspx.cs">
+      <DependentUpon>DriverList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DriverList.aspx.designer.cs">
+      <DependentUpon>DriverList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DriverDetail.aspx.cs">
+      <DependentUpon>DriverDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DriverDetail.aspx.designer.cs">
+      <DependentUpon>DriverDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DriverPublicProfile.aspx.cs">
+      <DependentUpon>DriverPublicProfile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DriverPublicProfile.aspx.designer.cs">
+      <DependentUpon>DriverPublicProfile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StaffList.aspx.cs">
+      <DependentUpon>StaffList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StaffList.aspx.designer.cs">
+      <DependentUpon>StaffList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StaffEdit.aspx.cs">
+      <DependentUpon>StaffEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StaffEdit.aspx.designer.cs">
+      <DependentUpon>StaffEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="VehicleAdd.aspx.cs">
+      <DependentUpon>VehicleAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VehicleAdd.aspx.designer.cs">
+      <DependentUpon>VehicleAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="VehicleEdit.aspx.cs">
+      <DependentUpon>VehicleEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VehicleEdit.aspx.designer.cs">
+      <DependentUpon>VehicleEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="VehicleFilter.aspx.cs">
+      <DependentUpon>VehicleFilter.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VehicleFilter.aspx.designer.cs">
+      <DependentUpon>VehicleFilter.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="VehicleFind.aspx.cs">
+      <DependentUpon>VehicleFind.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VehicleFind.aspx.designer.cs">
+      <DependentUpon>VehicleFind.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="VehicleList.aspx.cs">
+      <DependentUpon>VehicleList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VehicleList.aspx.designer.cs">
+      <DependentUpon>VehicleList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="VehicleDetail.aspx.cs">
+      <DependentUpon>VehicleDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VehicleDetail.aspx.designer.cs">
+      <DependentUpon>VehicleDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BookingConfirmed.aspx.cs">
+      <DependentUpon>BookingConfirmed.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BookingConfirmed.aspx.designer.cs">
+      <DependentUpon>BookingConfirmed.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ContributorAdd.aspx.cs">
+      <DependentUpon>ContributorAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ContributorAdd.aspx.designer.cs">
+      <DependentUpon>ContributorAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ContributorEdit.aspx.cs">
+      <DependentUpon>ContributorEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ContributorEdit.aspx.designer.cs">
+      <DependentUpon>ContributorEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ContributorFilter.aspx.cs">
+      <DependentUpon>ContributorFilter.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ContributorFilter.aspx.designer.cs">
+      <DependentUpon>ContributorFilter.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ContributorFind.aspx.cs">
+      <DependentUpon>ContributorFind.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ContributorFind.aspx.designer.cs">
+      <DependentUpon>ContributorFind.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ContributorList.aspx.cs">
+      <DependentUpon>ContributorList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ContributorList.aspx.designer.cs">
+      <DependentUpon>ContributorList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ContributorView.aspx.cs">
+      <DependentUpon>ContributorView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ContributorView.aspx.designer.cs">
+      <DependentUpon>ContributorView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TempPasswords.aspx.cs">
+      <DependentUpon>TempPasswords.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TempPasswords.aspx.designer.cs">
+      <DependentUpon>TempPasswords.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SetNewPassword.aspx.cs">
+      <DependentUpon>SetNewPassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SetNewPassword.aspx.designer.cs">
+      <DependentUpon>SetNewPassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ContribVehicleAdd.aspx.cs">
+      <DependentUpon>ContribVehicleAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ContribVehicleAdd.aspx.designer.cs">
+      <DependentUpon>ContribVehicleAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ContribVehicleEdit.aspx.cs">
+      <DependentUpon>ContribVehicleEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ContribVehicleEdit.aspx.designer.cs">
+      <DependentUpon>ContribVehicleEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ContribVehicleList.aspx.cs">
+      <DependentUpon>ContribVehicleList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ContribVehicleList.aspx.designer.cs">
+      <DependentUpon>ContribVehicleList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ContributorApply.aspx.cs">
+      <DependentUpon>ContributorApply.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ContributorApply.aspx.designer.cs">
+      <DependentUpon>ContributorApply.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Careers.aspx.cs">
+      <DependentUpon>Careers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Careers.aspx.designer.cs">
+      <DependentUpon>Careers.aspx</DependentUpon>
+    </Compile>
     <Compile Include="App_Code\DatabaseHelper.cs" />
     <Compile Include="App_Code\TripManager.cs" />
+    <Compile Include="App_Code\CarImages.cs" />
+    <Compile Include="App_Code\ContributorManager.cs" />
+    <Compile Include="App_Code\CustomerManager.cs" />
+    <Compile Include="App_Code\DriverManager.cs" />
+    <Compile Include="App_Code\PasswordHelper.cs" />
+    <Compile Include="App_Code\VehicleManager.cs" />
+    <Compile Include="App_Code\PasswordResetManager.cs" />
+    <Compile Include="App_Code\DataExport.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="MainMenu.aspx.cs">
-      <DependentUpon>MainMenu.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="MainMenu.aspx.designer.cs">
-      <DependentUpon>MainMenu.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -194,13 +565,6 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
