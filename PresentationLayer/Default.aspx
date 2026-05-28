@@ -1,4 +1,8 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="DriveNow.Default" %>
+<%@ Page Language="C#" %>
+<%-- Legacy placeholder. Real page lives in the DriveNow project. --%>
+<script runat="server">
+protected void Page_Load(object s, EventArgs e) { Response.Redirect("~/Default.aspx"); }
+</script>
 <!DOCTYPE html>
 <html>
 <head runat="server">

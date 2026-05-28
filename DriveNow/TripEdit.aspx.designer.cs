@@ -1,0 +1,43 @@
+// Auto-generated designer file for TripEdit.aspx — kept in sync manually.
+namespace DriveNow
+{
+    public partial class TripEdit
+    {
+        protected global::System.Web.UI.HtmlControls.HtmlForm frmTripEdit;
+        protected global::System.Web.UI.WebControls.Label lblError;
+        protected global::System.Web.UI.WebControls.Label lblSuccess;
+        protected global::System.Web.UI.WebControls.HiddenField hdnTripID;
+        protected global::System.Web.UI.WebControls.HiddenField hdnCustomerTripID;
+
+        // Core trip dropdowns
+        protected global::System.Web.UI.WebControls.DropDownList ddlCustomer;
+        protected global::System.Web.UI.WebControls.DropDownList ddlVehicle;
+        protected global::System.Web.UI.WebControls.DropDownList ddlDriver;
+        protected global::System.Web.UI.WebControls.DropDownList ddlTripType;
+
+        // Pickup / drop-off fields
+        protected global::System.Web.UI.WebControls.TextBox txtPickupLocation;
+        protected global::System.Web.UI.WebControls.TextBox txtPickupDate;
+        protected global::System.Web.UI.WebControls.TextBox txtPickupTime;
+        protected global::System.Web.UI.WebControls.TextBox txtDropoffLocation;
+        protected global::System.Web.UI.WebControls.TextBox txtDropoffDate;
+        protected global::System.Web.UI.WebControls.TextBox txtDropoffTime;
+        protected global::System.Web.UI.WebControls.TextBox txtNotes;
+
+        // Insurance hidden field
+        protected global::System.Web.UI.WebControls.HiddenField hdnInsurance;
+
+        // Add-on checkboxes
+        protected global::System.Web.UI.WebControls.CheckBox chkGPS;
+        protected global::System.Web.UI.WebControls.CheckBox chkMobileMount;
+        protected global::System.Web.UI.WebControls.CheckBox chkBabySeat;
+        protected global::System.Web.UI.WebControls.CheckBox chkBoosterSeat;
+        protected global::System.Web.UI.WebControls.CheckBox chkCycleCarrier;
+        protected global::System.Web.UI.WebControls.CheckBox chkRoofBox;
+        protected global::System.Web.UI.WebControls.CheckBox chkWifiHotspot;
+        protected global::System.Web.UI.WebControls.CheckBox chkDashcam;
+
+        protected global::System.Web.UI.WebControls.Button btnSave;
+        protected global::System.Web.UI.WebControls.Button btnCancel;
+    }
+}
