@@ -1,0 +1,10 @@
+.vs/
+**/.vs/
+**/.claude/
+bin/
+obj/
+packages/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
