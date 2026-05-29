@@ -354,5 +354,88 @@ namespace DriveNow
 
             return dt;
         }
+
+
+        // ============================================================
+        // APPROVAL METHODS — required by ContributorView.aspx
+        // ============================================================
+
+        /// <summary>
+        /// Simple approval — sets IsApproved = 1 via spApproveContributor.
+        /// </summary>
+        public static void Approve(int contributorID)
+        {
+            using (SqlConnection conn = DatabaseHelper.GetConnection())
+            using (SqlCommand cmd = new SqlCommand("spApproveContributor", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ContributorID", contributorID);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
+        /// Full approval — sets IsApproved=1 and auto-promotes the contributor
+        /// into tblDriver and/or tblVehicle based on their ContributorType.
+        /// Calls spApproveContributorFull (Script 26).
+        /// Returns (NewDriverID, NewVehicleID); either may be 0 if not applicable.
+        /// </summary>
+        public static (int driverID, int vehicleID) ApproveFull(int contributorID)
+        {
+            using (SqlConnection conn = DatabaseHelper.GetConnection())
+            using (SqlCommand cmd = new SqlCommand("spApproveContributorFull", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ContributorID", contributorID);
+
+                DataTable dt = new DataTable();
+                new SqlDataAdapter(cmd).Fill(dt);
+
+                int driverID  = 0;
+                int vehicleID = 0;
+
+                if (dt.Rows.Count > 0)
+                {
+                    if (dt.Rows[0]["NewDriverID"]  != DBNull.Value) driverID  = Convert.ToInt32(dt.Rows[0]["NewDriverID"]);
+                    if (dt.Rows[0]["NewVehicleID"] != DBNull.Value) vehicleID = Convert.ToInt32(dt.Rows[0]["NewVehicleID"]);
+                }
+
+                return (driverID, vehicleID);
+            }
+        }
+
+        /// <summary>
+        /// Returns a single DataRow with all tblContributor columns for the given ID.
+        /// Returns null if the record is not found.
+        /// </summary>
+        public static DataRow GetDetails(int contributorID)
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection conn = DatabaseHelper.GetConnection())
+            using (SqlCommand cmd = new SqlCommand("spGetContributorDetails", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ContributorID", contributorID);
+                new SqlDataAdapter(cmd).Fill(dt);
+            }
+            return dt.Rows.Count > 0 ? dt.Rows[0] : null;
+        }
+
+        /// <summary>
+        /// Permanently removes a contributor and all linked ContribVehicle records.
+        /// Calls spHardDeleteContributor.
+        /// </summary>
+        public static void HardDelete(int contributorID, int retentionMonths)
+        {
+            using (SqlConnection conn = DatabaseHelper.GetConnection())
+            using (SqlCommand cmd = new SqlCommand("spHardDeleteContributor", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ContributorID",   contributorID);
+                cmd.Parameters.AddWithValue("@RetentionMonths", retentionMonths);
+                cmd.Parameters.AddWithValue("@ConsentDate",     DateTime.Today);
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }
