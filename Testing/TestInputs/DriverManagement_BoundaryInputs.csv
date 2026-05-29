@@ -1,0 +1,21 @@
+﻿TestArea,Field,TestType,TestData,ExpectedResult
+Driver Add,FullName,Extreme Min,"",Reject because required
+Driver Add,FullName,Min -1,"1 character name",Accept but review data quality because no minimum length rule exists
+Driver Add,FullName,Min Boundary,"Ali Khan",Accept realistic driver name
+Driver Add,FullName,Max Boundary,"100 characters or less",Accept within tblDriver FullName size
+Driver Add,FullName,Max +1,"101 characters",Database/page should prevent overflow or report error
+Driver Add,Phone,Extreme Min,"",Reject because required
+Driver Add,Phone,Invalid Data Type,"letters only",Reject through regex validation
+Driver Add,Phone,Mid,"07123 456789",Accept valid phone format
+Driver Add,LicenceNumber,Extreme Min,"",Reject because required
+Driver Add,LicenceNumber,Duplicate,"existing licence",Reject/protect duplicate driver identity
+Driver Add,DateOfBirth,Min -1,"under 18",Reject through DriverManager age check
+Driver Add,DateOfBirth,Min Boundary,"exactly 18",Accept
+Driver Add,JoinDate,Max +1,"future date",Reject through DriverManager future-date check
+Driver Profile,Rating,Min Boundary,"0.0",Accept
+Driver Profile,Rating,Max Boundary,"5.0",Accept
+Driver Profile,Rating,Max +1,"5.1",Reject
+Driver Profile,Rating,Invalid Data Type,"text",Reject
+Driver List,IsActive,Other Test,"soft delete",Driver removed from active list
+Driver List,IsActive,Other Test,"restore",Driver appears in active list again
+Driver List,IsActive,Other Test,"hard delete",Driver is permanently removed
