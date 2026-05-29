@@ -14,7 +14,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>DriveNow — Edit Contributor Vehicle</title>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" />
     <link rel="stylesheet" href="Content/Site.css" />
 </head>
 <body>
@@ -29,37 +28,34 @@
                 <nav class="dn-sidebar-nav">
                     <div class="dn-nav-label">Main</div>
                     <a href="MainMenu.aspx" class="dn-nav-item">
-                         Main Menu
+                        <span class="dn-nav-icon">⌂</span> Main Menu
                     </a>
                     <div class="dn-nav-label">Contributors</div>
                     <a href="ContributorList.aspx" class="dn-nav-item active">
-                         List Contributors
+                        <span class="dn-nav-icon">☰</span> List Contributors
                     </a>
                     <a href="ContributorAdd.aspx" class="dn-nav-item">
-                         Add Contributor
+                        <span class="dn-nav-icon">+</span> Add Contributor
                     </a>
                     <a href="ContributorFind.aspx" class="dn-nav-item">
-                         Find Contributor
+                        <span class="dn-nav-icon">🔍</span> Find Contributor
                     </a>
                     <a href="ContributorFilter.aspx" class="dn-nav-item">
-                         Filter Contributors
+                        <span class="dn-nav-icon">⚡</span> Filter Contributors
                     </a>
                     <div class="dn-nav-label">Team</div>
-                    <a href="TripList.aspx" class="dn-nav-item">
-                         Trip Records
+                    <a href="#" class="dn-nav-item">
+                        <span class="dn-nav-icon">🚗</span> Trip Records
                     </a>
-                    <a href="CustomerList.aspx" class="dn-nav-item">
-                         Customers
+                    <a href="#" class="dn-nav-item">
+                        <span class="dn-nav-icon">👤</span> Customers
                     </a>
-                    <a href="VehicleList.aspx" class="dn-nav-item">
-                         Vehicles
+                    <a href="#" class="dn-nav-item">
+                        <span class="dn-nav-icon">🚘</span> Vehicles
                     </a>
-                    <a href="DriverList.aspx" class="dn-nav-item">
-                         Drivers
+                    <a href="#" class="dn-nav-item">
+                        <span class="dn-nav-icon">🧑</span> Drivers
                     </a>
-                    <div class="dn-nav-label">ADMIN</div>
-                    <a href="TempPasswords.aspx" class="dn-nav-item"><span class="material-symbols-outlined" style="font-size:17px;">key</span> Temp Passwords</a>
-            <a href="StaffList.aspx"       class="dn-nav-item"><span class="material-symbols-outlined" style="font-size:17px;">badge</span> Staff</a>
                 </nav>
                 <div class="dn-sidebar-footer">
                     <div class="dn-sidebar-user">
@@ -78,7 +74,6 @@
 
                 <!-- TOPBAR -->
                 <div class="dn-topbar">
-            <button type="button" class="dn-mobile-menu-btn" onclick="toggleSidebar()" aria-label="Toggle navigation">&#9776;</button>
                     <div class="dn-topbar-title">Edit Contributor Vehicle</div>
                     <div class="dn-topbar-right">
                         <asp:HyperLink ID="hlBack" runat="server"
@@ -166,22 +161,5 @@
             </div>
         </div>
     </form>
-<script>
-    /* ── Mobile sidebar toggle ───────────────────────────── */
-    function toggleSidebar() {
-        document.body.classList.toggle('sidebar-open');
-    }
-    /* Close sidebar when clicking the dark overlay backdrop */
-    document.addEventListener('click', function(e) {
-        if (document.body.classList.contains('sidebar-open') &&
-            !e.target.closest('.dn-sidebar') &&
-            !e.target.closest('.dn-mobile-menu-btn')) {
-            document.body.classList.remove('sidebar-open');
-        }
-    });
-</script>
 </body>
 </html>
-
-
-

@@ -157,37 +157,5 @@ namespace DriveNow
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSave;
-
-        // ── Notes ──────────────────────────────────────────────────────────────
-        protected global::System.Web.UI.WebControls.TextBox txtNotes;
-
-        // ── Phone validator ────────────────────────────────────────────────────
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator revPhone;
-
-        // ── Driver credentials panel ───────────────────────────────────────────
-        protected global::System.Web.UI.WebControls.Panel   pnlDriverSection;
-        protected global::System.Web.UI.WebControls.TextBox txtLicenceNumber;
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator revLicenceNumber;
-        protected global::System.Web.UI.WebControls.TextBox txtDateOfBirth;
-        protected global::System.Web.UI.WebControls.TextBox txtLicenceIssueDate;
-        protected global::System.Web.UI.WebControls.TextBox txtLicenceExpiryDate;
-
-        // ── Vehicle details panel ──────────────────────────────────────────────
-        protected global::System.Web.UI.WebControls.Panel      pnlVehicleSection;
-        protected global::System.Web.UI.WebControls.TextBox    txtVehicleMake;
-        protected global::System.Web.UI.WebControls.TextBox    txtVehicleModel;
-        protected global::System.Web.UI.WebControls.TextBox    txtVehicleYear;
-        protected global::System.Web.UI.WebControls.TextBox    txtVehicleReg;
-        protected global::System.Web.UI.WebControls.TextBox    txtVehicleColour;
-        protected global::System.Web.UI.WebControls.TextBox    txtVehicleSeats;
-        protected global::System.Web.UI.WebControls.TextBox    txtVehicleDailyRate;
-
-        // ── Vehicle photo upload ───────────────────────────────────────────────
-        protected global::System.Web.UI.WebControls.Panel      pnlCurrentVehiclePhoto;
-        protected global::System.Web.UI.WebControls.Image      imgCurrentContribVehicle;
-        protected global::System.Web.UI.WebControls.CheckBox   chkRemoveVehiclePhoto;
-        protected global::System.Web.UI.WebControls.Panel      pnlNoVehiclePhoto;
-        protected global::System.Web.UI.WebControls.FileUpload fuContribVehiclePhoto;
-        protected global::System.Web.UI.WebControls.HiddenField hfCurrentVehiclePhotoUrl;
     }
 }
