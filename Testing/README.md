@@ -21,6 +21,7 @@ This folder follows the Portfolio 2 testing lecture instructions. The lecturer a
 ## Included Files
 
 - `TestScripts/DriverManagement_SQL_TestScript.sql`
+- `TestScripts/DriverManagement_SQL_PassFail_Tests.sql`
 - `TestScripts/DriverManagement_ManualTestChecklist.md`
 - `TestInputs/DriverManagement_BoundaryInputs.csv`
 - `TestResults/DriverManagement_TestResults.md`
@@ -44,5 +45,6 @@ This folder follows the Portfolio 2 testing lecture instructions. The lecturer a
 2. Set up the database using the scripts in `DataLayer/SQL`.
 3. Use `TestInputs/DriverManagement_BoundaryInputs.csv` as the test data.
 4. Use `TestScripts/DriverManagement_SQL_TestScript.sql` in SSMS for database evidence.
-5. Record evidence in `TestResults` and screenshots in `Screenshots`.
-6. Use `TestLogs/DriverManagement_Portfolio2_TestLogs.md` and the Word portfolio for final submission evidence.
+5. Use `TestScripts/DriverManagement_SQL_PassFail_Tests.sql` in SSMS when you need a clear PASS/FAIL result grid.
+6. Record evidence in `TestResults` and screenshots in `Screenshots`.
+7. Use `TestLogs/DriverManagement_Portfolio2_TestLogs.md` and the Word portfolio for final submission evidence.
