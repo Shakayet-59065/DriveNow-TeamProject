@@ -145,7 +145,7 @@ namespace DriveNow
         /// <summary>
         /// Soft deletes contributor by setting IsApproved = 0.
         /// Cascades to soft-delete linked vehicles (IsAvailable = 0).
-        /// Records are kept in the database — use HardDelete for permanent removal.
+        /// Records are NEVER permanently removed — preserves GDPR audit trail.
         /// </summary>
         public void Delete()
         {
@@ -154,92 +154,6 @@ namespace DriveNow
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@ContributorID", ContributorID);
-                cmd.ExecuteNonQuery();
-            }
-        }
-
-        /// <summary>
-        /// Approves a pending contributor application by setting IsApproved = 1.
-        /// Calls spApproveContributor (Script 12). Quick one-click action — staff do
-        /// not need to open the full edit form just to approve an application.
-        /// </summary>
-        public static void Approve(int contributorID)
-        {
-            using (SqlConnection conn = DatabaseHelper.GetConnection())
-            using (SqlCommand cmd = new SqlCommand("spApproveContributor", conn))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@ContributorID", contributorID);
-                cmd.ExecuteNonQuery();
-            }
-        }
-
-        /// <summary>
-        /// Full approval — sets IsApproved=1 and auto-promotes the contributor
-        /// into tblDriver and/or tblVehicle based on their ContributorType.
-        /// Calls spApproveContributorFull (Script 26).
-        /// Returns a tuple of (NewDriverID, NewVehicleID); either may be 0 if
-        /// not applicable for the contributor type.
-        /// </summary>
-        public static (int driverID, int vehicleID) ApproveFull(int contributorID)
-        {
-            using (SqlConnection conn = DatabaseHelper.GetConnection())
-            using (SqlCommand cmd = new SqlCommand("spApproveContributorFull", conn))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@ContributorID", contributorID);
-
-                DataTable dt = new DataTable();
-                new SqlDataAdapter(cmd).Fill(dt);
-
-                int driverID  = 0;
-                int vehicleID = 0;
-
-                if (dt.Rows.Count > 0)
-                {
-                    if (dt.Rows[0]["NewDriverID"]  != DBNull.Value) driverID  = Convert.ToInt32(dt.Rows[0]["NewDriverID"]);
-                    if (dt.Rows[0]["NewVehicleID"] != DBNull.Value) vehicleID = Convert.ToInt32(dt.Rows[0]["NewVehicleID"]);
-                }
-
-                return (driverID, vehicleID);
-            }
-        }
-
-        /// <summary>
-        /// Returns a single DataRow with all tblContributor columns for the given ID.
-        /// Returns null if the record is not found.
-        /// </summary>
-        public static DataRow GetDetails(int contributorID)
-        {
-            DataTable dt = new DataTable();
-
-            using (SqlConnection conn = DatabaseHelper.GetConnection())
-            using (SqlCommand cmd = new SqlCommand(
-                "SELECT * FROM tblContributor WHERE ContributorID = @id", conn))
-            {
-                cmd.CommandType = CommandType.Text;
-                cmd.Parameters.AddWithValue("@id", contributorID);
-                new SqlDataAdapter(cmd).Fill(dt);
-            }
-
-            return dt.Rows.Count > 0 ? dt.Rows[0] : null;
-        }
-
-        /// <summary>
-        /// Permanently removes a contributor and all linked ContribVehicle records.
-        /// Records the data-retention period (3 or 6 months) in the audit log
-        /// via spHardDeleteContributor before the record is erased.
-        /// Only call this after explicit staff consent has been captured.
-        /// </summary>
-        public static void HardDelete(int contributorID, int retentionMonths)
-        {
-            using (SqlConnection conn = DatabaseHelper.GetConnection())
-            using (SqlCommand cmd = new SqlCommand("spHardDeleteContributor", conn))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@ContributorID",   contributorID);
-                cmd.Parameters.AddWithValue("@RetentionMonths", retentionMonths);
-                cmd.Parameters.AddWithValue("@ConsentDate",     DateTime.Today);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -343,8 +257,8 @@ namespace DriveNow
             if (Phone.Length > 20)
             { ErrorMessage = "Phone number must not exceed 20 characters."; return false; }
 
-            if (ContributorType != "Driver" && ContributorType != "VehicleOwner" && ContributorType != "OwnerDriver")
-            { ErrorMessage = "Contributor type must be Driver, VehicleOwner, or OwnerDriver."; return false; }
+            if (ContributorType != "Driver" && ContributorType != "VehicleOwner")
+            { ErrorMessage = "Contributor type must be Driver or VehicleOwner."; return false; }
 
             if (ApplicationDate == DateTime.MinValue)
             { ErrorMessage = "Application date is required."; return false; }

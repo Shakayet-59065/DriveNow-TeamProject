@@ -1,242 +1,154 @@
-// DriveNow — Contributor List Code-Behind
-// Contributors are vehicle owners or drivers who partner with DriveNow.
-// They must be reviewed and approved by staff before becoming active.
-// Module: CTEC2713N
+﻿// ============================================================
+// File: ContributorList.aspx.cs
+// Developer: Ushna
+// Component: Contributor Applications
+// Layer: Presentation Layer
+// Purpose: Displays all contributor application records from
+//          tblContributor in a styled GridView table.
+//          Stat cards show live counts — total, approved, pending,
+//          and driver applications — calculated from the DataTable.
+//          Edit button redirects to ContributorEdit.aspx with ID.
+//          Delete performs a soft delete (IsApproved = 0) — records
+//          are never permanently removed from the database.
+//          Vehicles button only shown for VehicleOwner contributors
+//          and redirects to ContribVehicleList.aspx with the ID.
+// ============================================================
 
 using System;
 using System.Data;
-using System.Data.SqlClient;
-using System.Web.UI;
 using System.Web.UI.WebControls;
+
 
 namespace DriveNow
 {
-    public partial class ListContributors : Page
+    public partial class ListContributors : System.Web.UI.Page
     {
-        // Returns the CSS class to highlight the selected tab (All, Approved, or Pending)
-        protected string TabCss(string tabName)
-        {
-            // Read the ?tab= URL parameter; default to "all" if not provided
-            string current = Request.QueryString["tab"] ?? "all";
-            return current == tabName ? "dn-pill active" : "dn-pill";
-        }
-
-        // Runs automatically when the page loads
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Redirect to login if the user is not authenticated
+            // Session check — redirect to login if not authenticated
+            // This runs on every page load to prevent unauthorised access
             if (Session["LoggedIn"] == null || !(bool)Session["LoggedIn"])
                 Response.Redirect("Login.aspx");
 
-            // Display today's date in the page header
+            // Show today's date in the topbar
             lblDate.Text = DateTime.Today.ToString("dd MMM yyyy");
 
-            // Load contributor data only on first visit — not after every form submission
+            // Only load data on first page load — not on button postbacks
+            // IsPostBack prevents the grid reloading and losing button context
             if (!IsPostBack)
+            {
                 LoadContributors();
+            }
         }
 
-        // Fetches contributor records, calculates stat counts, and fills the grid
+        /// <summary>
+        /// Fetches all contributor records via ContributorManager.List()
+        /// and binds them to the GridView. Also calculates and updates
+        /// the four stat card counts from the returned DataTable.
+        /// Called on first load and after any delete operation.
+        /// </summary>
         private void LoadContributors()
         {
             try
             {
-                // Get all contributors from the database regardless of approval status
-                DataTable all = ContributorManager.List();
+                DataTable dt = ContributorManager.List();
 
-                // Count how many are approved, pending, and of type "Driver" for the stat cards
-                int total = all.Rows.Count, approved = 0, pending = 0, drivers = 0;
-                foreach (DataRow row in all.Rows)
+                // Bind data to GridView — DataBinder.Eval in ASPX reads from this
+                gvContributors.DataSource = dt;
+                gvContributors.DataBind();
+
+                // Calculate stat card values by looping through the DataTable
+                // This avoids extra database calls for each count
+                int total = dt.Rows.Count;
+                int approved = 0;
+                int pending = 0;
+                int drivers = 0;
+
+                foreach (DataRow row in dt.Rows)
                 {
+                    // Count approved vs pending based on IsApproved BIT value
                     if (Convert.ToBoolean(row["IsApproved"])) approved++;
                     else pending++;
+
+                    // Count driver-type contributors separately
                     if (row["ContributorType"].ToString() == "Driver") drivers++;
                 }
 
-                // Update the stat labels at the top of the page
-                lblTotalCount.Text    = total.ToString();
+                // Update stat card labels with calculated values
+                lblTotalCount.Text = total.ToString();
                 lblApprovedCount.Text = approved.ToString();
-                lblPendingCount.Text  = pending.ToString();
-                lblDriverCount.Text   = drivers.ToString();
-
-                // Filter the grid based on which tab the user selected
-                string tab = Request.QueryString["tab"] ?? "all";
-                DataTable view = tab == "approved" ? ContributorManager.Filter("", true)   // Only approved
-                               : tab == "pending"  ? ContributorManager.Filter("", false)  // Only pending
-                               : all;                                                        // Show everyone
-
-                gvContributors.DataSource = view;
-                gvContributors.DataBind();
-
-                // Show a friendly empty state message if no contributors match the tab
-                gvContributors.EmptyDataText = tab == "approved" ? "No approved contributors found."
-                                             : tab == "pending"  ? "No pending contributors found."
-                                             : "No contributor records found.";
+                lblPendingCount.Text = pending.ToString();
+                lblDriverCount.Text = drivers.ToString();
             }
             catch (Exception ex)
             {
-                lblError.Text     = "Error loading contributors: " + ex.Message;
+                // Show error on page rather than crashing — better user experience
+                lblError.Text = "Error loading contributors: " + ex.Message;
                 lblError.CssClass = "dn-alert-error";
-                lblError.Visible  = true;
+                lblError.Visible = true;
             }
         }
 
-        // Redirects to the full application detail page for this contributor
-        protected void btnView_Click(object sender, EventArgs e)
-        {
-            Button btn = (Button)sender;
-            Response.Redirect("ContributorView.aspx?id=" + btn.CommandArgument);
-        }
-
-        // Approves a contributor using the full approval SP, auto-promoting into tblDriver/tblVehicle
-        protected void btnApprove_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Button btn = (Button)sender;
-                int id = Convert.ToInt32(btn.CommandArgument);
-
-                var result = ContributorManager.ApproveFull(id);
-
-                string msg = "Contributor approved successfully.";
-                if (result.driverID  > 0) msg += " Driver created (ID: #" + result.driverID + ").";
-                if (result.vehicleID > 0) msg += " Vehicle added to fleet (ID: #" + result.vehicleID + ").";
-
-                lblError.Text     = msg;
-                lblError.CssClass = "dn-alert-success";
-                lblError.Visible  = true;
-                LoadContributors();
-            }
-            catch (Exception ex)
-            {
-                lblError.Text     = "Error approving contributor: " + ex.Message;
-                lblError.CssClass = "dn-alert-error";
-                lblError.Visible  = true;
-            }
-        }
-
-        // Redirects to the Edit page to update the contributor's details
+        /// <summary>
+        /// Redirects to ContributorEdit.aspx passing the ContributorID
+        /// in the query string so the edit form can load the correct record.
+        /// </summary>
         protected void btnEdit_Click(object sender, EventArgs e)
         {
+            // Get the ContributorID stored in the button's CommandArgument
             Button btn = (Button)sender;
-            Response.Redirect("ContributorEdit.aspx?id=" + btn.CommandArgument);
+            int contributorID = Convert.ToInt32(btn.CommandArgument);
+
+            // Pass ID via query string — EditContributor reads Request.QueryString["id"]
+            Response.Redirect("ContributorEdit.aspx?id=" + contributorID);
         }
 
-        // Soft-delete: removes the contributor from the active list (keeps the record)
+        /// <summary>
+        /// Soft deletes the selected contributor by setting IsApproved = 0.
+        /// The record stays in the database — this preserves audit history
+        /// and prevents orphaned vehicle records in tblContribVehicle.
+        /// Reloads the list after deletion and shows confirmation message.
+        /// </summary>
         protected void btnDelete_Click(object sender, EventArgs e)
         {
             try
             {
                 Button btn = (Button)sender;
-                // Create an instance, set the ID, and call Delete on the ContributorManager
+                int contributorID = Convert.ToInt32(btn.CommandArgument);
+
+                // Create instance and set ID — Delete() uses ContributorID property
                 ContributorManager cm = new ContributorManager();
-                cm.ContributorID = Convert.ToInt32(btn.CommandArgument);
+                cm.ContributorID = contributorID;
                 cm.Delete();
 
-                lblError.Text     = "Contributor deleted successfully.";
+                // Reload the list so the deleted record disappears
+                LoadContributors();
+
+                // Confirm deletion to staff
+                lblError.Text = "Contributor deleted successfully.";
                 lblError.CssClass = "dn-alert-success";
-                lblError.Visible  = true;
-                LoadContributors(); // Refresh the grid after deletion
+                lblError.Visible = true;
             }
             catch (Exception ex)
             {
-                lblError.Text     = "Error deleting contributor: " + ex.Message;
+                lblError.Text = "Error deleting contributor: " + ex.Message;
                 lblError.CssClass = "dn-alert-error";
-                lblError.Visible  = true;
+                lblError.Visible = true;
             }
         }
 
-        // This server-side handler is intentionally empty — the hard-delete button is intercepted
-        // by JavaScript which opens a GDPR consent modal before any server action happens
-        protected void btnHardDelete_Click(object sender, EventArgs e)
-        {
-            // This button is intercepted by JS (openRetentionModal) so it
-            // never posts back directly — only btnConfirmHardDelete does.
-        }
-
-        // Permanently deletes a contributor after the admin confirms GDPR retention consent
-        protected void btnConfirmHardDelete_Click(object sender, EventArgs e)
-        {
-            // Only proceed if the admin has ticked the consent checkbox in the modal
-            if (hfConsentConfirmed.Value != "1")
-                return;
-
-            int id;
-            int months;
-
-            // Validate the hidden Contributor ID and chosen retention period (3 or 6 months)
-            if (!int.TryParse(hfHardDeleteID.Value, out id) || id <= 0)
-                return;
-            if (!int.TryParse(hfRetentionMonths.Value, out months) || (months != 3 && months != 6))
-                return;
-
-            try
-            {
-                // Permanently delete the contributor and record the chosen backup retention period
-                ContributorManager.HardDelete(id, months);
-
-                lblError.Text     = "Contributor permanently deleted. Data will be retained in backup archives for "
-                                  + months + " months as per consent recorded on " + DateTime.Today.ToString("dd MMM yyyy") + ".";
-                lblError.CssClass = "dn-alert-success";
-                lblError.Visible  = true;
-
-                // Reset all hidden fields so the modal cannot be re-submitted accidentally
-                hfHardDeleteID.Value     = "0";
-                hfRetentionMonths.Value  = "0";
-                hfConsentConfirmed.Value = "0";
-
-                LoadContributors(); // Refresh to confirm the record is gone
-            }
-            catch (Exception ex)
-            {
-                lblError.Text     = "Error permanently deleting contributor: " + ex.Message;
-                lblError.CssClass = "dn-alert-error";
-                lblError.Visible  = true;
-            }
-        }
-
-        // Redirects to the contributor's vehicle list page to see which vehicles they own
+        /// <summary>
+        /// Redirects to ContribVehicleList.aspx for VehicleOwner contributors.
+        /// This button is only visible on VehicleOwner rows — controlled by
+        /// the Visible property in the ASPX GridView template field.
+        /// </summary>
         protected void btnVehicles_Click(object sender, EventArgs e)
         {
             Button btn = (Button)sender;
-            Response.Redirect("ContribVehicleList.aspx?id=" + btn.CommandArgument);
-        }
+            int contributorID = Convert.ToInt32(btn.CommandArgument);
 
-        // ── CSV Export ────────────────────────────────────────────────────────
-        // Exports ALL contributor applications as a CSV file that opens in Excel.
-        // Notes, profile photos and sensitive internal flags are excluded.
-        protected void btnExportCsv_Click(object sender, EventArgs e)
-        {
-            DataTable dt = new DataTable();
-            try
-            {
-                using (SqlConnection conn = DatabaseHelper.GetConnection())
-                using (SqlCommand cmd = new SqlCommand(
-                    @"SELECT ContributorID                                    AS [ID],
-                             FullName                                         AS [Full Name],
-                             Email,
-                             Phone,
-                             ContributorType                                  AS [Type],
-                             ApplicationDate                                  AS [Applied],
-                             ISNULL(CAST(LicenceNumber AS NVARCHAR(50)),'')  AS [Licence No],
-                             ISNULL(CONVERT(NVARCHAR,DateOfBirth,105),'')    AS [Date of Birth],
-                             ISNULL(CONVERT(NVARCHAR,LicenceIssueDate,105),'') AS [Licence Issued],
-                             ISNULL(CONVERT(NVARCHAR,LicenceExpiryDate,105),'') AS [Licence Expiry],
-                             CASE WHEN IsApproved=1 THEN 'Approved' ELSE 'Pending' END AS [Status]
-                      FROM   tblContributor
-                      ORDER  BY ContributorID", conn))
-                {
-                    new SqlDataAdapter(cmd).Fill(dt);
-                }
-            }
-            catch (Exception ex)
-            {
-                lblError.Text     = "Export failed: " + ex.Message;
-                lblError.CssClass = "dn-alert-error";
-                lblError.Visible  = true;
-                return;
-            }
-            DataExport.DownloadCsv(Response, dt, "DriveNow_Contributors");
+            // Pass ContributorID so the vehicles page loads the correct records
+            Response.Redirect("ContribVehicleList.aspx?id=" + contributorID);
         }
     }
 }
