@@ -32,6 +32,7 @@ BEGIN
     SELECT VehicleID, RegistrationNo, Make, Model, DailyRate, DateAdded, IsAvailable, Seats,
            ISNULL(PhotoUrl, '') AS PhotoUrl
     FROM   tblVehicle
+    WHERE  IsAvailable = 1          -- only show in-service vehicles in the customer fleet
     ORDER  BY DateAdded DESC;
 END
 GO
