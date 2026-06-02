@@ -2867,6 +2867,8 @@ function declinePrivacyConsent() {
 
     function setLang(code, label) {
         currentLang = code;
+        // Persist the choice so it survives page reloads and navigation back to the homepage
+        try { localStorage.setItem('dn-lang', code); } catch (e) {}
         document.getElementById('langDropdown').style.display = 'none';
         var btn = document.getElementById('langBtn');
         if (btn) btn.innerHTML = code + ' &#9662;';
@@ -2958,6 +2960,17 @@ function declinePrivacyConsent() {
             if (lnkSignIn) lnkSignIn.textContent = t.regSignIn;
         }
     }
+
+    // Restore the saved language preference on load so the choice persists
+    // across reloads and when navigating back to the homepage.
+    document.addEventListener('DOMContentLoaded', function() {
+        try {
+            var savedLang = localStorage.getItem('dn-lang');
+            if (savedLang && savedLang !== 'EN' && LANG_DATA[savedLang]) {
+                setLang(savedLang, savedLang);
+            }
+        } catch (e) {}
+    });
 
     // ── Assist / Help menu ─────────────────────────────
     function toggleAssistMenu() {
