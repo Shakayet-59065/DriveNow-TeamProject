@@ -3242,22 +3242,15 @@ function declinePrivacyConsent() {
         }
     }
 
-    // ── Auto-open login modal if redirected from customer-login link ────
+    // ── Capture returnUrl for post-login redirect — but do NOT auto-open the
+    //    login modal. The homepage must stay put on load; the customer opens
+    //    the login/sign-up box themselves via the nav buttons. (openlogin=1 and
+    //    returnUrl no longer pop the modal automatically.)
     (function() {
         var params = new URLSearchParams(window.location.search);
-        if (params.has('returnUrl') || params.get('openlogin') === '1') {
-            var returnUrl = params.get('returnUrl');
-            if (returnUrl) sessionStorage.setItem('dn_returnUrl', returnUrl);
-            setTimeout(function() { openModal('m-login'); }, 400);
-        }
+        var returnUrl = params.get('returnUrl');
+        if (returnUrl) sessionStorage.setItem('dn_returnUrl', returnUrl);
     })();
-
-    // Auto-open login modal if redirected from a page that requires login (e.g. BookTrip.aspx)
-    if (window.location.search.indexOf('openlogin=1') !== -1) {
-        window.addEventListener('DOMContentLoaded', function() {
-            setTimeout(function() { openModal('m-login'); }, 400);
-        });
-    }
 
     // ── Reopen login/register modal after a failed server-side postback ──
     // RegisterStartupScript fires BEFORE openModal is defined (it runs just before
