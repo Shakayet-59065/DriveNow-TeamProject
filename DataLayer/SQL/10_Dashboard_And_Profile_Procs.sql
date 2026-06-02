@@ -19,7 +19,10 @@ AS
 BEGIN
     SET NOCOUNT ON;
     SELECT
-        (SELECT COUNT(*) FROM tblTrip)                          AS TripCount,
+        -- Active Trips card: only trips that are still live — exclude
+        -- cancelled (IsActive = 0) and completed/returned (CarReturned = 1) trips.
+        (SELECT COUNT(*) FROM tblTrip
+          WHERE IsActive = 1 AND CarReturned = 0)               AS TripCount,
         (SELECT COUNT(*) FROM tblTripType  WHERE IsActive = 1)  AS TripTypeCount,
         (SELECT COUNT(*) FROM tblCustomer  WHERE IsActive = 1)  AS CustomerCount,
         (SELECT COUNT(*) FROM tblDriver    WHERE IsActive = 1)  AS DriverCount,

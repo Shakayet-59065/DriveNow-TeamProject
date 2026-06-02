@@ -78,6 +78,8 @@ namespace DriveNow
             {
                 if (!IsActive)
                     return CancelledBy == "Customer" ? "Cancelled by Customer" : "Cancelled by Admin";
+                // A returned vehicle means the trip is finished, regardless of dates.
+                if (CarReturned) return "Completed";
                 if (TripDate > DateTime.Now) return "Upcoming";
                 return "In Progress";
             }
