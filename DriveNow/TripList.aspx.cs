@@ -157,6 +157,7 @@ namespace DriveNow
                 case "Upcoming":              return "dn-badge dn-badge-blue";
                 case "Cancelled by Admin":    return "dn-badge dn-badge-red";
                 case "Cancelled by Customer": return "dn-badge dn-badge-orange";
+                case "Completed":             return "dn-badge dn-badge-teal";
                 case "Car Returned":          return "dn-badge dn-badge-teal";
                 default:                      return "dn-badge dn-badge-grey";
             }
