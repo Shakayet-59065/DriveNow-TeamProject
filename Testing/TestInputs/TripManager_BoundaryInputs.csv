@@ -1,0 +1,25 @@
+Attribute,DataType,Rule,TestType,InputValue,ExpectedResult
+BaseRate,DECIMAL(8\,2),> 0,Extreme Min,-9999.99,Reject
+BaseRate,DECIMAL(8\,2),> 0,Min -1,0.00,Reject
+BaseRate,DECIMAL(8\,2),> 0,Min (Boundary),0.01,Accept
+BaseRate,DECIMAL(8\,2),> 0,Min +1,0.02,Accept
+BaseRate,DECIMAL(8\,2),> 0,Large,9999.99,Accept
+BaseRate,DECIMAL(8\,2),> 0,Invalid Data Type,"abc",Reject
+TypeName,VARCHAR(50),1-50 chars required,Extreme Min,(empty),Reject
+TypeName,VARCHAR(50),1-50 chars required,Invalid,(whitespace only),Reject
+TypeName,VARCHAR(50),1-50 chars required,Max (Boundary),50 characters,Accept
+TypeName,VARCHAR(50),1-50 chars required,Max +1,51 characters,Reject
+Description,VARCHAR(200),0-200 chars optional,Min,(null/empty),Accept
+Description,VARCHAR(200),0-200 chars optional,Max (Boundary),200 characters,Accept
+Description,VARCHAR(200),0-200 chars optional,Max +1,201 characters,Reject
+TripDate,DATE,today or future,Min -1,yesterday,Reject
+TripDate,DATE,today or future,Min (Boundary),today,Accept
+TripDate,DATE,today or future,Above,+6 months,Accept
+TripDate,DATE,today or future,Extreme Max,+2 years,Accept
+TripDate,DATE,today or future,Invalid Data Type,"notadate",Reject
+CustomerID,INT (FK),> 0,Min -1,0,Reject
+CustomerID,INT (FK),> 0,Below,-99,Reject
+CustomerID,INT (FK),> 0,Valid,1,Accept
+VehicleID,INT (FK),> 0,Min -1,0,Reject
+VehicleID,INT (FK),> 0,Below,-5,Reject
+TripTypeID,INT (FK),> 0,Min -1,0,Reject
